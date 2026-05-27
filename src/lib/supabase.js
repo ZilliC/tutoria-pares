@@ -89,6 +89,19 @@ export async function listarAlumnos() {
   return data;
 }
 
+export async function eliminarAlumno(usuarioId) {
+  const { error: errModelos } = await supabase
+    .from("modelos")
+    .delete()
+    .eq("usuario_id", usuarioId);
+  if (errModelos) throw errModelos;
+  const { error: errUsuario } = await supabase
+    .from("usuarios")
+    .delete()
+    .eq("id", usuarioId);
+  if (errUsuario) throw errUsuario;
+}
+
 export async function listarAlumnosConModelos() {
   const alumnos = await listarAlumnos();
   const { data: todosModelos, error } = await supabase

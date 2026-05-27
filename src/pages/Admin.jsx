@@ -1,23 +1,43 @@
 import { useEffect, useState } from "react";
-import { listarAlumnosConModelos, todosLosConceptos } from "../lib/supabase.js";
+import {
+  listarAlumnosConModelos,
+  todosLosConceptos,
+  eliminarAlumno,
+} from "../lib/supabase.js";
 
 export default function Admin({ onVerAlumno, onLogout }) {
   const [alumnos, setAlumnos] = useState(null);
   const [error, setError] = useState("");
+  const [aEliminar, setAEliminar] = useState(null);
+  const [eliminando, setEliminando] = useState(false);
+
+  async function cargar() {
+    try {
+      const data = await listarAlumnosConModelos();
+      setAlumnos(data);
+    } catch (e) {
+      setError(e.message);
+    }
+  }
 
   useEffect(() => {
-    let activo = true;
-    listarAlumnosConModelos()
-      .then((data) => {
-        if (activo) setAlumnos(data);
-      })
-      .catch((e) => {
-        if (activo) setError(e.message);
-      });
-    return () => {
-      activo = false;
-    };
+    cargar();
   }, []);
+
+  async function confirmarEliminar() {
+    if (!aEliminar) return;
+    setEliminando(true);
+    setError("");
+    try {
+      await eliminarAlumno(aEliminar.id);
+      setAlumnos((prev) => prev.filter((a) => a.id !== aEliminar.id));
+      setAEliminar(null);
+    } catch (e) {
+      setError("No se pudo eliminar: " + e.message);
+    } finally {
+      setEliminando(false);
+    }
+  }
 
   const total = todosLosConceptos().length;
 
@@ -64,30 +84,75 @@ export default function Admin({ onVerAlumno, onLogout }) {
             ).length;
             const pct = Math.round((dominados / total) * 100);
             return (
-              <button
+              <div
                 key={a.id}
-                onClick={() => onVerAlumno(a)}
-                className="w-full bg-white border border-slate-200 hover:border-blue-400 rounded-xl p-4 text-left flex justify-between items-center transition-colors"
+                className="bg-white border border-slate-200 hover:border-blue-400 rounded-xl flex items-center transition-colors"
               >
-                <div>
-                  <div className="font-semibold text-slate-800">
-                    {a.nombre} {a.apellidos}
+                <button
+                  type="button"
+                  onClick={() => onVerAlumno(a)}
+                  className="flex-1 text-left p-4 flex justify-between items-center"
+                >
+                  <div>
+                    <div className="font-semibold text-slate-800">
+                      {a.nombre} {a.apellidos}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {a.quiz_completado
+                        ? `${dominados} de ${total} conceptos dominados`
+                        : "No ha completado el quiz"}
+                    </div>
                   </div>
-                  <div className="text-xs text-slate-500 mt-0.5">
-                    {a.quiz_completado
-                      ? `${dominados} de ${total} conceptos dominados`
-                      : "No ha completado el quiz"}
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-slate-800">
+                      {pct}%
+                    </div>
+                    <div className="text-xs text-slate-500">avance</div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-slate-800">
-                    {pct}%
-                  </div>
-                  <div className="text-xs text-slate-500">avance</div>
-                </div>
-              </button>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAEliminar(a)}
+                  className="text-xs px-3 py-1 mr-3 rounded-full border border-red-300 text-red-700 hover:bg-red-50 whitespace-nowrap"
+                >
+                  Eliminar
+                </button>
+              </div>
             );
           })}
+        </div>
+      )}
+
+      {aEliminar && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-10">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-bold text-slate-800 mb-2">
+              Eliminar alumno
+            </h3>
+            <p className="text-sm text-slate-600 mb-4">
+              ¿Estás seguro de que quieres eliminar a{" "}
+              <strong>
+                {aEliminar.nombre} {aEliminar.apellidos}
+              </strong>
+              ? Esta acción no se puede deshacer.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAEliminar(null)}
+                disabled={eliminando}
+                className="flex-1 px-4 py-2 rounded-lg border border-slate-300 text-slate-700 disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarEliminar}
+                disabled={eliminando}
+                className="flex-1 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-50"
+              >
+                {eliminando ? "Eliminando..." : "Eliminar"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
