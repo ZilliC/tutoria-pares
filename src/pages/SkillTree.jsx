@@ -27,6 +27,7 @@ export default function SkillTree({
   onLogout,
   onReevaluar,
   onVerLeaderboard,
+  onIniciarQuiz,
 }) {
   const user = targetUser || usuarioActual;
   const [modelos, setModelos] = useState(null);
@@ -119,12 +120,24 @@ export default function SkillTree({
       </div>
 
       {todoCero ? (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
-          <p className="text-amber-800 font-medium">
-            {modoAdmin
-              ? "Este alumno aún no completa el quiz."
-              : "Tu perfil está vacío. Completa el quiz para ver tu progreso."}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-8 text-center max-w-md mx-auto my-8 shadow-sm">
+          <p className="text-amber-800 font-semibold text-lg mb-2">
+            {modoAdmin ? "Perfil vacío" : "¡Comienza tu diagnóstico!"}
           </p>
+          <p className="text-amber-700 text-sm mb-6">
+            {modoAdmin
+              ? "Este alumno aún no ha completado el quiz."
+              : "Tu perfil está vacío. Completa el quiz de diagnóstico para ver tu skill tree y buscar matches de tutoría."}
+          </p>
+          {!modoAdmin && onIniciarQuiz && (
+            <button
+              type="button"
+              onClick={onIniciarQuiz}
+              className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2.5 rounded-lg text-sm shadow transition-colors"
+            >
+              Comenzar Diagnóstico
+            </button>
+          )}
         </div>
       ) : vista === "arbol" ? (
         <div className="mb-4">

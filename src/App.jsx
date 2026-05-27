@@ -69,6 +69,7 @@ export default function App() {
         onLogout={logout}
         onVerLeaderboard={() => setPagina("leaderboard")}
         onBuscarMatch={() => setPagina("matches")}
+        onIniciarQuiz={() => setPagina("onboarding")}
         onReevaluar={(conceptos) => {
           setConceptosAEvaluar(conceptos);
           setPagina("quiz-reeval");
