@@ -5,10 +5,16 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
   const [conocidos, setConocidos] = useState(new Set());
   const [mostrarAdvertencia, setMostrarAdvertencia] = useState(false);
 
-  function toggle(concepto) {
+  function toggleTema(t) {
     const next = new Set(conocidos);
-    if (next.has(concepto)) next.delete(concepto);
-    else next.add(concepto);
+    const todosSeleccionados = t.conceptos.every((c) => next.has(c));
+    if (todosSeleccionados) {
+      // Deseleccionar todos los conceptos de este tema
+      t.conceptos.forEach((c) => next.delete(c));
+    } else {
+      // Seleccionar todos los conceptos de este tema
+      t.conceptos.forEach((c) => next.add(c));
+    }
     setConocidos(next);
   }
 
@@ -20,6 +26,11 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
     onContinuar(Array.from(conocidos));
   }
 
+  const totalTemas = DOMAIN.unidades.flatMap((u) => u.temas).length;
+  const temasSeleccionados = DOMAIN.unidades
+    .flatMap((u) => u.temas)
+    .filter((t) => t.conceptos.every((c) => conocidos.has(c))).length;
+
   return (
     <div className="min-h-screen p-4 sm:p-6 max-w-3xl mx-auto">
       <div className="flex justify-between items-start mb-4">
@@ -28,8 +39,7 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
             Hola, {usuario.nombre}
           </h1>
           <p className="text-slate-600 text-sm">
-            Marca los conceptos que conoces. Sé honesto: si no lo conoces,
-            déjalo apagado.
+            Marca las áreas o temas que conoces. Los conceptos incluidos se muestran como referencia. Sé honesto: si no los dominas, déjalos apagados.
           </p>
         </div>
         <button
@@ -49,36 +59,43 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
             <h2 className="text-lg font-semibold text-slate-800 mb-3">
               {u.nombre}
             </h2>
-            <div className="space-y-4">
-              {u.temas.map((t) => (
-                <div key={t.id}>
-                  <h3 className="text-sm font-medium text-slate-600 mb-2">
-                    {t.nombre}
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {t.conceptos.map((c) => {
-                      const activo = conocidos.has(c);
-                      return (
-                        <button
-                          key={c}
-                          type="button"
-                          onClick={() => toggle(c)}
-                          className={`text-left px-3 py-2 rounded-lg border transition-all ${
+            <div className="space-y-2">
+              {u.temas.map((t) => {
+                const activo = t.conceptos.every((c) => conocidos.has(c));
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => toggleTema(t)}
+                    className={`w-full text-left p-4 rounded-xl border transition-all flex items-center justify-between ${
+                      activo
+                        ? "bg-blue-50 border-blue-400 text-blue-900 shadow-sm"
+                        : "bg-white border-slate-200 text-slate-800 hover:border-slate-300"
+                    }`}
+                  >
+                    <div className="flex-1">
+                      <div className="font-semibold text-sm sm:text-base flex items-center">
+                        <span
+                          className={`w-4 h-4 mr-2.5 rounded border flex items-center justify-center text-xs transition-colors ${
                             activo
-                              ? "bg-blue-50 border-blue-400 text-blue-800"
-                              : "bg-white border-slate-200 text-slate-600"
+                              ? "bg-blue-600 border-blue-600 text-white"
+                              : "border-slate-300 bg-white"
                           }`}
                         >
-                          <span className="text-xs mr-2">
-                            {activo ? "✓" : "○"}
-                          </span>
-                          {c}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+                          {activo && "✓"}
+                        </span>
+                        {t.nombre}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-1 pl-6">
+                        Conceptos incluidos:{" "}
+                        <span className="font-medium text-slate-600">
+                          {t.conceptos.join(", ")}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -88,9 +105,9 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="text-sm text-slate-600">
             <span className="font-semibold text-slate-800">
-              {conocidos.size}
+              {temasSeleccionados}
             </span>{" "}
-            conceptos marcados
+            de {totalTemas} temas marcados ({conocidos.size} conceptos)
           </div>
           <button
             onClick={handleContinuar}
@@ -108,9 +125,9 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
               ¿Saltar el quiz?
             </h3>
             <p className="text-sm text-slate-600 mb-4">
-              No marcaste ningún concepto. Tu perfil quedará en nivel 0
-              para todos los temas. Puedes continuar o regresar a marcar
-              los que sí conoces.
+              No marcaste ningún tema. Tu perfil quedará en nivel 0 para todos
+              los conceptos. Puedes continuar o regresar a marcar los temas que
+              sí conoces.
             </p>
             <div className="flex gap-2">
               <button
