@@ -4,6 +4,12 @@ import { obtenerModelos, todosLosConceptos } from "../lib/supabase.js";
 import SkillBar, { colorPorNivel } from "../components/SkillBar.jsx";
 import Accordion from "../components/Accordion.jsx";
 import ProgressRing from "../components/ProgressRing.jsx";
+import SkillTreeVisual from "../components/SkillTreeVisual.jsx";
+
+function vistaInicial() {
+  if (typeof window === "undefined") return "acordeon";
+  return window.innerWidth >= 768 ? "arbol" : "acordeon";
+}
 
 const FONDO_TEMA = {
   0: "bg-slate-50",
@@ -24,6 +30,7 @@ export default function SkillTree({
   const user = targetUser || usuarioActual;
   const [modelos, setModelos] = useState(null);
   const [error, setError] = useState("");
+  const [vista, setVista] = useState(vistaInicial);
 
   useEffect(() => {
     let activo = true;
@@ -80,8 +87,19 @@ export default function SkillTree({
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+      <div className="bg-white rounded-xl border border-slate-200 p-4 mb-4 flex justify-between items-center gap-3 flex-wrap">
         <ProgressRing value={dominados} total={conceptos.length} />
+        {!todoCero && (
+          <button
+            type="button"
+            onClick={() =>
+              setVista(vista === "arbol" ? "acordeon" : "arbol")
+            }
+            className="text-sm px-4 py-2 rounded-full border border-slate-300 text-slate-700 hover:bg-slate-50 whitespace-nowrap"
+          >
+            {vista === "arbol" ? "Ver tabla" : "Ver árbol visual"}
+          </button>
+        )}
       </div>
 
       {todoCero ? (
@@ -91,6 +109,20 @@ export default function SkillTree({
               ? "Este alumno aún no completa el quiz."
               : "Tu perfil está vacío. Completa el quiz para ver tu progreso."}
           </p>
+        </div>
+      ) : vista === "arbol" ? (
+        <div className="mb-4">
+          <SkillTreeVisual
+            modelos={modelos}
+            nombreAlumno={user.nombre}
+            modoAdmin={modoAdmin}
+            onEvaluarTema={
+              !modoAdmin && onReevaluar ? onReevaluar : undefined
+            }
+            onEvaluarConcepto={
+              !modoAdmin && onReevaluar ? (c) => onReevaluar([c]) : undefined
+            }
+          />
         </div>
       ) : (
         <div className="space-y-3 mb-4">
