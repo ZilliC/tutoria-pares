@@ -26,7 +26,6 @@ export default function Quiz({
   const [nivelesPrevios, setNivelesPrevios] = useState(null);
   const [orden, setOrden] = useState([]);
   const [idx, setIdx] = useState(0);
-  const [paso, setPaso] = useState("p1");
   const [respuestas, setRespuestas] = useState({}); // concepto -> nivel final
   const [terminado, setTerminado] = useState(false);
   const [guardando, setGuardando] = useState(false);
@@ -46,10 +45,6 @@ export default function Quiz({
           setTerminado(true);
           return;
         }
-        const primero = lista[0];
-        const previo = m[primero] || 0;
-        if (previo >= 2 && QUIZ[primero].p2) setPaso("p2");
-        else setPaso("p1");
       })
       .catch((e) => {
         if (activo) setError(e.message);
@@ -67,30 +62,11 @@ export default function Quiz({
       return;
     }
     setIdx(nextIdx);
-    const c = orden[nextIdx];
-    const previo = (nivelesPrevios && nivelesPrevios[c]) || 0;
-    if (previo >= 2 && QUIZ[c].p2) setPaso("p2");
-    else setPaso("p1");
   }
 
-  function onResponderP1(op) {
+  function onResponder(op) {
     const c = orden[idx];
-    if (op.nivel === 3) {
-      // Candidato a nivel 3 → ir a p2 del mismo concepto (si existe)
-      if (QUIZ[c].p2) {
-        setPaso("p2");
-        return;
-      }
-      // Sin p2: bloquear en 3
-      avanzar({ ...respuestas, [c]: 3 });
-      return;
-    }
-    avanzar({ ...respuestas, [c]: op.nivel });
-  }
-
-  function onResponderP2(op) {
-    const c = orden[idx];
-    const nivel = op.correcto ? 3 : 2;
+    const nivel = QUIZ[c].niveles[op.id] ?? 0;
     avanzar({ ...respuestas, [c]: nivel });
   }
 
@@ -128,7 +104,7 @@ export default function Quiz({
   }
 
   const c = orden[idx];
-  const preg = paso === "p1" ? QUIZ[c].p1 : QUIZ[c].p2;
+  const preg = QUIZ[c];
   const totalConceptos = orden.length;
 
   return (
@@ -136,11 +112,6 @@ export default function Quiz({
       <div className="flex justify-between items-center mb-4">
         <div className="text-sm text-slate-500">
           Pregunta {idx + 1} de {totalConceptos}
-          {paso === "p2" && (
-            <span className="ml-2 text-xs text-blue-600 font-medium">
-              · detalle
-            </span>
-          )}
         </div>
         <button
           onClick={onLogout}
@@ -157,16 +128,9 @@ export default function Quiz({
         />
       </div>
 
-      {paso === "p1" && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg p-3 mb-4">
-          Si no estás seguro, selecciona <strong>No sé</strong>. No adivines.
-        </div>
-      )}
-      {paso === "p2" && (
-        <div className="bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded-lg p-3 mb-4">
-          Pregunta de detalle: elige la opción que sea precisamente correcta.
-        </div>
-      )}
+      <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg p-3 mb-4">
+        Si no estás seguro, selecciona <strong>No sé</strong>. No adivines.
+      </div>
 
       <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
         <h2 className="text-lg font-semibold text-slate-800 mb-4">
@@ -176,9 +140,7 @@ export default function Quiz({
           {preg.opciones.map((op) => (
             <button
               key={op.id}
-              onClick={() =>
-                paso === "p1" ? onResponderP1(op) : onResponderP2(op)
-              }
+              onClick={() => onResponder(op)}
               className="w-full text-left px-4 py-3 rounded-lg border border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-colors text-slate-800"
             >
               {op.texto}
