@@ -66,8 +66,10 @@ export default function SkillTree({
   const dominados = conceptos.filter((c) => modelos[c] >= 2).length;
   const todoCero = conceptos.every((c) => modelos[c] === 0);
 
+  const maxWidth = vista === "arbol" && !todoCero ? "max-w-6xl" : "max-w-3xl";
+
   return (
-    <div className="min-h-screen p-4 sm:p-6 max-w-3xl mx-auto">
+    <div className={`min-h-screen p-4 sm:p-6 ${maxWidth} mx-auto`}>
       <div className="flex justify-between items-start mb-4 gap-2">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">
