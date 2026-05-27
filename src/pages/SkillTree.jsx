@@ -26,6 +26,7 @@ export default function SkillTree({
   onVolverAdmin,
   onLogout,
   onReevaluar,
+  onVerLeaderboard,
 }) {
   const user = targetUser || usuarioActual;
   const [modelos, setModelos] = useState(null);
@@ -81,12 +82,25 @@ export default function SkillTree({
             {modoAdmin ? "Perfil del alumno (lectura)" : "Tu skill tree"}
           </p>
         </div>
-        <button
-          onClick={modoAdmin ? onVolverAdmin : onLogout}
-          className="text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap"
-        >
-          {modoAdmin ? "← Volver al admin" : "Cerrar sesión"}
-        </button>
+        <div className="flex items-center gap-3">
+          {!modoAdmin && onVerLeaderboard && (
+            <>
+              <button
+                onClick={onVerLeaderboard}
+                className="text-sm text-blue-600 hover:text-blue-800 whitespace-nowrap font-medium"
+              >
+                Leaderboard 🏆
+              </button>
+              <span className="text-slate-300">|</span>
+            </>
+          )}
+          <button
+            onClick={modoAdmin ? onVolverAdmin : onLogout}
+            className="text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap"
+          >
+            {modoAdmin ? "← Volver al admin" : "Cerrar sesión"}
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-slate-200 p-4 mb-4 flex justify-between items-center gap-3 flex-wrap">

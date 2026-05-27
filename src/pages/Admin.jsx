@@ -6,7 +6,7 @@ import {
   resetearProgresoAlumno,
 } from "../lib/supabase.js";
 
-export default function Admin({ onVerAlumno, onLogout }) {
+export default function Admin({ onVerAlumno, onLogout, onVerLeaderboard }) {
   const [alumnos, setAlumnos] = useState(null);
   const [error, setError] = useState("");
   const [aEliminar, setAEliminar] = useState(null);
@@ -77,12 +77,25 @@ export default function Admin({ onVerAlumno, onLogout }) {
             Lista de alumnos y su avance
           </p>
         </div>
-        <button
-          onClick={onLogout}
-          className="text-sm text-slate-500 hover:text-slate-700"
-        >
-          Cerrar sesión
-        </button>
+        <div className="flex items-center gap-3">
+          {onVerLeaderboard && (
+            <>
+              <button
+                onClick={onVerLeaderboard}
+                className="text-sm text-blue-600 hover:text-blue-800 whitespace-nowrap font-medium"
+              >
+                Leaderboard 🏆
+              </button>
+              <span className="text-slate-300">|</span>
+            </>
+          )}
+          <button
+            onClick={onLogout}
+            className="text-sm text-slate-500 hover:text-slate-700"
+          >
+            Cerrar sesión
+          </button>
+        </div>
       </div>
 
       {error && (

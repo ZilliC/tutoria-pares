@@ -5,6 +5,7 @@ import Quiz from "./pages/Quiz.jsx";
 import SkillTree from "./pages/SkillTree.jsx";
 import Matches from "./pages/Matches.jsx";
 import Admin from "./pages/Admin.jsx";
+import Leaderboard from "./pages/Leaderboard.jsx";
 
 export default function App() {
   const [usuario, setUsuario] = useState(null);
@@ -66,6 +67,7 @@ export default function App() {
       <SkillTree
         usuarioActual={usuario}
         onLogout={logout}
+        onVerLeaderboard={() => setPagina("leaderboard")}
         onBuscarMatch={() => setPagina("matches")}
         onReevaluar={(conceptos) => {
           setConceptosAEvaluar(conceptos);
@@ -104,6 +106,7 @@ export default function App() {
     return (
       <Admin
         onLogout={logout}
+        onVerLeaderboard={() => setPagina("leaderboard")}
         onVerAlumno={(a) => {
           setTargetUser(a);
           setPagina("admin-skilltree");
@@ -134,6 +137,21 @@ export default function App() {
         targetUser={targetUser}
         modoAdmin
         onVolver={() => setPagina("admin-skilltree")}
+      />
+    );
+  }
+
+  if (pagina === "leaderboard") {
+    return (
+      <Leaderboard
+        onLogout={logout}
+        onVolver={() => {
+          if (usuario.rol === "admin") {
+            setPagina("admin");
+          } else {
+            setPagina("skilltree");
+          }
+        }}
       />
     );
   }
