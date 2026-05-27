@@ -6,7 +6,7 @@ import {
   todosLosConceptos,
 } from "../lib/supabase.js";
 
-export default function Quiz({ usuario, conocidos, onCompletar, onLogout }) {
+export default function Quiz({ usuario, conocidos, onCompletar, onLogout, modoReeval = false }) {
   const conceptosConPregunta = useMemo(
     () => conocidos.filter((c) => QUIZ[c]),
     [conocidos]
@@ -28,6 +28,7 @@ export default function Quiz({ usuario, conocidos, onCompletar, onLogout }) {
         setGuardando={setGuardando}
         error={error}
         setError={setError}
+        modoReeval={modoReeval}
       />
     );
   }
@@ -57,6 +58,7 @@ export default function Quiz({ usuario, conocidos, onCompletar, onLogout }) {
         setGuardando={setGuardando}
         error={error}
         setError={setError}
+        modoReeval={modoReeval}
       />
     );
   }
@@ -121,21 +123,34 @@ function PantallaFin({
   setGuardando,
   error,
   setError,
+  modoReeval,
 }) {
   async function finalizar() {
     setError("");
     setGuardando(true);
     try {
-      const conocidosSet = new Set(conocidos);
-      const modelos = todosLosConceptos().map((c) => {
-        if (!conocidosSet.has(c)) return { concepto: c, nivel: 0 };
-        const resp = respuestas[c];
-        if (!resp || !QUIZ[c]) return { concepto: c, nivel: 0 };
-        const nivel = QUIZ[c].niveles[resp] ?? 0;
-        return { concepto: c, nivel };
-      });
+      let modelos;
+      if (modoReeval) {
+        modelos = conocidos
+          .filter((c) => QUIZ[c] && respuestas[c])
+          .map((c) => ({
+            concepto: c,
+            nivel: QUIZ[c].niveles[respuestas[c]] ?? 0,
+          }));
+      } else {
+        const conocidosSet = new Set(conocidos);
+        modelos = todosLosConceptos().map((c) => {
+          if (!conocidosSet.has(c)) return { concepto: c, nivel: 0 };
+          const resp = respuestas[c];
+          if (!resp || !QUIZ[c]) return { concepto: c, nivel: 0 };
+          const nivel = QUIZ[c].niveles[resp] ?? 0;
+          return { concepto: c, nivel };
+        });
+      }
       await guardarModelos(usuario.id, modelos);
-      await marcarQuizCompletado(usuario.id);
+      if (!modoReeval) {
+        await marcarQuizCompletado(usuario.id);
+      }
       onCompletar();
     } catch (err) {
       setError("Error al guardar: " + err.message);
@@ -148,10 +163,12 @@ function PantallaFin({
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 max-w-md w-full text-center">
         <h2 className="text-2xl font-bold text-slate-800 mb-2">
-          ¡Terminaste el quiz!
+          {modoReeval ? "Re-evaluación completa" : "¡Terminaste el quiz!"}
         </h2>
         <p className="text-slate-600 mb-6 text-sm">
-          Guarda tu perfil para ver tu skill tree y buscar matches.
+          {modoReeval
+            ? "Guarda los cambios para actualizar tu perfil."
+            : "Guarda tu perfil para ver tu skill tree y buscar matches."}
         </p>
         {error && (
           <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-2 mb-4">
@@ -163,7 +180,11 @@ function PantallaFin({
           disabled={guardando}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg disabled:opacity-50"
         >
-          {guardando ? "Guardando..." : "Ver mi perfil"}
+          {guardando
+            ? "Guardando..."
+            : modoReeval
+              ? "Actualizar mi perfil"
+              : "Ver mi perfil"}
         </button>
         <button
           onClick={onLogout}

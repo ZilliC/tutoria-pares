@@ -11,6 +11,7 @@ export default function App() {
   const [pagina, setPagina] = useState("login");
   const [conocidos, setConocidos] = useState([]);
   const [targetUser, setTargetUser] = useState(null);
+  const [conceptosAEvaluar, setConceptosAEvaluar] = useState([]);
 
   function logout() {
     setUsuario(null);
@@ -66,6 +67,25 @@ export default function App() {
         usuarioActual={usuario}
         onLogout={logout}
         onBuscarMatch={() => setPagina("matches")}
+        onReevaluar={(conceptos) => {
+          setConceptosAEvaluar(conceptos);
+          setPagina("quiz-reeval");
+        }}
+      />
+    );
+  }
+
+  if (pagina === "quiz-reeval") {
+    return (
+      <Quiz
+        usuario={usuario}
+        conocidos={conceptosAEvaluar}
+        modoReeval
+        onLogout={logout}
+        onCompletar={() => {
+          setConceptosAEvaluar([]);
+          setPagina("skilltree");
+        }}
       />
     );
   }

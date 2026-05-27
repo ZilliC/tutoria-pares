@@ -19,6 +19,7 @@ export default function SkillTree({
   onBuscarMatch,
   onVolverAdmin,
   onLogout,
+  onReevaluar,
 }) {
   const user = targetUser || usuarioActual;
   const [modelos, setModelos] = useState(null);
@@ -121,14 +122,30 @@ export default function SkillTree({
                         key={t.id}
                         className={`rounded-lg p-3 ${FONDO_TEMA[Math.round(promT)]}`}
                       >
-                        <h4 className="font-semibold text-slate-700 mb-1">
-                          {t.nombre}
-                        </h4>
+                        <div className="flex justify-between items-center mb-1 gap-2">
+                          <h4 className="font-semibold text-slate-700">
+                            {t.nombre}
+                          </h4>
+                          {!modoAdmin && onReevaluar && (
+                            <button
+                              type="button"
+                              onClick={() => onReevaluar(t.conceptos)}
+                              className="text-xs px-3 py-1 rounded-full border border-blue-400 text-blue-700 hover:bg-blue-50 whitespace-nowrap"
+                            >
+                              Evaluar tema
+                            </button>
+                          )}
+                        </div>
                         {t.conceptos.map((c) => (
                           <SkillBar
                             key={c}
                             concepto={c}
                             nivel={modelos[c] || 0}
+                            onEvaluar={
+                              !modoAdmin && onReevaluar
+                                ? () => onReevaluar([c])
+                                : undefined
+                            }
                           />
                         ))}
                       </div>

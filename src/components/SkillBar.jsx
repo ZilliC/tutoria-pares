@@ -12,13 +12,24 @@ const ETIQUETAS = {
   3: "Puede enseñarlo",
 };
 
-export default function SkillBar({ concepto, nivel }) {
+export default function SkillBar({ concepto, nivel, onEvaluar }) {
   const pct = (nivel / 3) * 100;
   return (
     <div className="py-2">
-      <div className="flex justify-between text-sm mb-1">
+      <div className="flex justify-between items-center text-sm mb-1 gap-2">
         <span className="font-medium text-slate-700">{concepto}</span>
-        <span className="text-slate-500 text-xs">{ETIQUETAS[nivel]}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-slate-500 text-xs">{ETIQUETAS[nivel]}</span>
+          {onEvaluar && (
+            <button
+              type="button"
+              onClick={onEvaluar}
+              className="text-xs px-2 py-0.5 rounded-full border border-blue-300 text-blue-700 hover:bg-blue-50"
+            >
+              Evaluar
+            </button>
+          )}
+        </div>
       </div>
       <div className="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
         <div
