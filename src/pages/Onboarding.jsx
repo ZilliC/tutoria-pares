@@ -86,12 +86,6 @@ export default function Onboarding({ usuario, onContinuar, onLogout }) {
                         </span>
                         {t.nombre}
                       </div>
-                      <div className="text-xs text-slate-500 mt-1 pl-6">
-                        Conceptos incluidos:{" "}
-                        <span className="font-medium text-slate-600">
-                          {t.conceptos.join(", ")}
-                        </span>
-                      </div>
                     </div>
                   </button>
                 );
