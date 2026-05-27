@@ -99,8 +99,22 @@ export async function eliminarAlumno(usuarioId) {
     .from("usuarios")
     .delete()
     .eq("id", usuarioId);
+}
+
+export async function resetearProgresoAlumno(usuarioId) {
+  const { error: errModelos } = await supabase
+    .from("modelos")
+    .delete()
+    .eq("usuario_id", usuarioId);
+  if (errModelos) throw errModelos;
+
+  const { error: errUsuario } = await supabase
+    .from("usuarios")
+    .update({ quiz_completado: false })
+    .eq("id", usuarioId);
   if (errUsuario) throw errUsuario;
 }
+
 
 export async function listarAlumnosConModelos() {
   const alumnos = await listarAlumnos();

@@ -3,6 +3,7 @@ import {
   listarAlumnosConModelos,
   todosLosConceptos,
   eliminarAlumno,
+  resetearProgresoAlumno,
 } from "../lib/supabase.js";
 
 export default function Admin({ onVerAlumno, onLogout }) {
@@ -10,6 +11,8 @@ export default function Admin({ onVerAlumno, onLogout }) {
   const [error, setError] = useState("");
   const [aEliminar, setAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
+  const [aResetear, setAResetear] = useState(null);
+  const [reseteando, setReseteando] = useState(false);
 
   async function cargar() {
     try {
@@ -36,6 +39,30 @@ export default function Admin({ onVerAlumno, onLogout }) {
       setError("No se pudo eliminar: " + e.message);
     } finally {
       setEliminando(false);
+    }
+  }
+
+  async function confirmarResetear() {
+    if (!aResetear) return;
+    setReseteando(true);
+    setError("");
+    try {
+      await resetearProgresoAlumno(aResetear.id);
+      setAlumnos((prev) =>
+        prev.map((a) => {
+          if (a.id === aResetear.id) {
+            const modelosReset = {};
+            for (const c of todosLosConceptos()) modelosReset[c] = 0;
+            return { ...a, quiz_completado: false, modelos: modelosReset };
+          }
+          return a;
+        })
+      );
+      setAResetear(null);
+    } catch (e) {
+      setError("No se pudo resetear el progreso: " + e.message);
+    } finally {
+      setReseteando(false);
     }
   }
 
@@ -112,6 +139,13 @@ export default function Admin({ onVerAlumno, onLogout }) {
                 </button>
                 <button
                   type="button"
+                  onClick={() => setAResetear(a)}
+                  className="text-xs px-3 py-1 mr-2 rounded-full border border-amber-300 text-amber-700 hover:bg-amber-50 whitespace-nowrap"
+                >
+                  Resetear
+                </button>
+                <button
+                  type="button"
                   onClick={() => setAEliminar(a)}
                   className="text-xs px-3 py-1 mr-3 rounded-full border border-red-300 text-red-700 hover:bg-red-50 whitespace-nowrap"
                 >
@@ -150,6 +184,39 @@ export default function Admin({ onVerAlumno, onLogout }) {
                 className="flex-1 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-50"
               >
                 {eliminando ? "Eliminando..." : "Eliminar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {aResetear && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-10">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-bold text-slate-800 mb-2">
+              Resetear progreso
+            </h3>
+            <p className="text-sm text-slate-600 mb-4">
+              ¿Estás seguro de que quieres resetear el progreso de{" "}
+              <strong>
+                {aResetear.nombre} {aResetear.apellidos}
+              </strong>
+              ? Esto eliminará todas las respuestas del quiz y el avance del alumno, permitiéndole realizar la evaluación desde cero.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAResetear(null)}
+                disabled={reseteando}
+                className="flex-1 px-4 py-2 rounded-lg border border-slate-300 text-slate-700 disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarResetear}
+                disabled={reseteando}
+                className="flex-1 px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold disabled:opacity-50"
+              >
+                {reseteando ? "Reseteando..." : "Confirmar"}
               </button>
             </div>
           </div>
