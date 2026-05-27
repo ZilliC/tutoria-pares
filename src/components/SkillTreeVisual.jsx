@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { DOMAIN } from "../data/quiz.js";
 import SkillBar from "./SkillBar.jsx";
 
@@ -194,23 +194,7 @@ export default function SkillTreeVisual({
   onEvaluarConcepto,
 }) {
   const [seleccionado, setSeleccionado] = useState(null);
-  const [colapsadas, setColapsadas] = useState(() => new Set());
-
-  function toggleUnidad(uid) {
-    setColapsadas((prev) => {
-      const next = new Set(prev);
-      if (next.has(uid)) next.delete(uid);
-      else next.add(uid);
-      return next;
-    });
-  }
-
-  // Si la unidad del tema seleccionado se colapsa, deseleccionar
-  useEffect(() => {
-    if (!seleccionado) return;
-    const t = LAYOUT.temas.find((x) => x.id === seleccionado);
-    if (t && colapsadas.has(t.unidadId)) setSeleccionado(null);
-  }, [colapsadas, seleccionado]);
+  const [expandido, setExpandido] = useState(true);
 
   const temaSel = useMemo(
     () => LAYOUT.temas.find((t) => t.id === seleccionado) || null,
@@ -222,9 +206,20 @@ export default function SkillTreeVisual({
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-4">
-      <div className="text-xs text-slate-500 mb-2">
-        Toca una unidad para ocultar sus temas · Toca un tema para ver sus
-        conceptos
+      <div className="flex justify-between items-center mb-2 gap-2">
+        <div className="text-xs text-slate-500">
+          Toca un tema para ver sus conceptos
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            if (expandido) setSeleccionado(null);
+            setExpandido((v) => !v);
+          }}
+          className="text-xs px-3 py-1 rounded-full border border-slate-300 text-slate-700 hover:bg-slate-50 whitespace-nowrap"
+        >
+          {expandido ? "Colapsar" : "Expandir"}
+        </button>
       </div>
 
       <div className="overflow-x-auto">
@@ -246,52 +241,56 @@ export default function SkillTreeVisual({
             />
           ))}
 
-          {/* Líneas unidad → tema (por unidad, omitidas si colapsada) */}
-          {LAYOUT.temas.map((t) => {
-            if (colapsadas.has(t.unidadId)) return null;
-            const u = LAYOUT.unidades.find((x) => x.id === t.unidadId);
-            return (
-              <line
-                key={`l-tema-${t.id}`}
-                x1={u.cx}
-                y1={Y_UNIDAD}
-                x2={t.cx}
-                y2={Y_TEMA + NODE_H}
-                stroke="#cbd5e1"
-                strokeWidth={2}
-                style={{ transition: "opacity 200ms ease" }}
-              />
-            );
-          })}
+          {/* Líneas y nodos de tema (ocultos si colapsado) */}
+          <g
+            style={{
+              opacity: expandido ? 1 : 0,
+              transform: expandido ? "scale(1)" : "scale(0.95)",
+              transformOrigin: "center top",
+              transition: "opacity 200ms ease, transform 200ms ease",
+              pointerEvents: expandido ? "auto" : "none",
+            }}
+          >
+            {LAYOUT.temas.map((t) => {
+              const u = LAYOUT.unidades.find((x) => x.id === t.unidadId);
+              return (
+                <line
+                  key={`l-tema-${t.id}`}
+                  x1={u.cx}
+                  y1={Y_UNIDAD}
+                  x2={t.cx}
+                  y2={Y_TEMA + NODE_H}
+                  stroke="#cbd5e1"
+                  strokeWidth={2}
+                />
+              );
+            })}
+            {LAYOUT.temas.map((t) => {
+              const pct = pctTema(t, modelos);
+              const color = COLOR_UNIDAD[t.unidadId];
+              return (
+                <NodoConFill
+                  key={t.id}
+                  x={t.x}
+                  y={t.y}
+                  w={NODE_W}
+                  h={NODE_H}
+                  label={t.nombre}
+                  sublabel={`${Math.round(pct * 100)}%`}
+                  color={color}
+                  pct={pct}
+                  selected={seleccionado === t.id}
+                  onClick={() =>
+                    setSeleccionado(seleccionado === t.id ? null : t.id)
+                  }
+                />
+              );
+            })}
+          </g>
 
-          {/* Nodos de tema (omitidos si su unidad está colapsada) */}
-          {LAYOUT.temas.map((t) => {
-            if (colapsadas.has(t.unidadId)) return null;
-            const pct = pctTema(t, modelos);
-            const color = COLOR_UNIDAD[t.unidadId];
-            return (
-              <NodoConFill
-                key={t.id}
-                x={t.x}
-                y={t.y}
-                w={NODE_W}
-                h={NODE_H}
-                label={t.nombre}
-                sublabel={`${Math.round(pct * 100)}%`}
-                color={color}
-                pct={pct}
-                selected={seleccionado === t.id}
-                onClick={() =>
-                  setSeleccionado(seleccionado === t.id ? null : t.id)
-                }
-              />
-            );
-          })}
-
-          {/* Nodos de unidad (clickeables) */}
+          {/* Nodos de unidad (no clickeables) */}
           {LAYOUT.unidades.map((u) => {
             const pct = pctUnidad(u, modelos);
-            const colapsada = colapsadas.has(u.id);
             return (
               <NodoConFill
                 key={u.id}
@@ -303,8 +302,6 @@ export default function SkillTreeVisual({
                 sublabel={`${Math.round(pct * 100)}%`}
                 color={u.color}
                 pct={pct}
-                onClick={() => toggleUnidad(u.id)}
-                chevron={colapsada ? "▸" : "▾"}
               />
             );
           })}
