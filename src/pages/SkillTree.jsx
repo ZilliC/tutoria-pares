@@ -175,11 +175,6 @@ export default function SkillTree({
                             key={c}
                             concepto={c}
                             nivel={modelos[c] || 0}
-                            onEvaluar={
-                              !modoAdmin && onReevaluar
-                                ? () => onReevaluar([c])
-                                : undefined
-                            }
                           />
                         ))}
                       </div>

@@ -191,7 +191,6 @@ export default function SkillTreeVisual({
   nombreAlumno,
   modoAdmin = false,
   onEvaluarTema,
-  onEvaluarConcepto,
 }) {
   const [seleccionado, setSeleccionado] = useState(null);
   const [expandido, setExpandido] = useState(true);
@@ -380,16 +379,7 @@ export default function SkillTreeVisual({
           </div>
           <div>
             {temaSel.conceptos.map((c) => (
-              <SkillBar
-                key={c}
-                concepto={c}
-                nivel={modelos[c] || 0}
-                onEvaluar={
-                  !modoAdmin && onEvaluarConcepto
-                    ? () => onEvaluarConcepto(c)
-                    : undefined
-                }
-              />
+              <SkillBar key={c} concepto={c} nivel={modelos[c] || 0} />
             ))}
           </div>
         </div>
