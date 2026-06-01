@@ -162,7 +162,7 @@ export default function Leaderboard({ onVolver, onLogout }) {
 
                 {/* Expanded Breakdown */}
                 {isExpanded && (
-                  <div className="bg-slate-50 border-t border-slate-100 p-4 space-y-4 animate-fadeIn">
+                  <div className="bg-slate-50 border-t border-slate-100 p-4 space-y-4">
                     <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                       Desglose de dominio por Unidad
                     </h4>

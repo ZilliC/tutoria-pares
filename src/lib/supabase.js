@@ -99,6 +99,7 @@ export async function eliminarAlumno(usuarioId) {
     .from("usuarios")
     .delete()
     .eq("id", usuarioId);
+  if (errUsuario) throw errUsuario;
 }
 
 export async function resetearProgresoAlumno(usuarioId) {

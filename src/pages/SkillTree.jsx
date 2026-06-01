@@ -148,9 +148,6 @@ export default function SkillTree({
             onEvaluarTema={
               !modoAdmin && onReevaluar ? onReevaluar : undefined
             }
-            onEvaluarConcepto={
-              !modoAdmin && onReevaluar ? (c) => onReevaluar([c]) : undefined
-            }
           />
         </div>
       ) : (
