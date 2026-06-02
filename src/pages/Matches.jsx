@@ -129,17 +129,18 @@ export default function Matches({
                   {m.peer.nombre} {m.peer.apellidos}
                 </h2>
                 <span className="text-sm font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                  {m.score} {m.score === 1 ? "tema" : "temas"} en común
+                  {m.score} {m.score === 1 ? "concepto" : "conceptos"}{" "}
+                  complementarios
                 </span>
               </div>
 
               <ListaDesglose
-                titulo={`${m.meEnsena.length} temas donde te puede ayudar`}
+                titulo={`${m.meEnsena.length} conceptos donde te puede ayudar`}
                 conceptos={m.meEnsena}
                 color="bg-green-50"
               />
               <ListaDesglose
-                titulo={`${m.yoEnseno.length} temas donde tú le puedes ayudar`}
+                titulo={`${m.yoEnseno.length} conceptos donde tú le puedes ayudar`}
                 conceptos={m.yoEnseno}
                 color="bg-blue-50"
               />
