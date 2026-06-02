@@ -85,18 +85,29 @@ export const DOMAIN = {
 // p1: pregunta de identificación. El alumno no ve el nombre del
 //     concepto; debe reconocerlo a partir de un escenario.
 //   - opción nivel 3 → correcta y precisa → dispara p2
-//   - opción nivel 2 → correcta con imprecisión sutil
-//   - opción nivel 1 → confusión con un concepto del MISMO tema
-//   - opción nivel 0 → confusión con un concepto de OTRO dominio
+//   - opción nivel 2 → correcta, pero con una imprecisión sutil
+//   - opción nivel 1 → confusión con un concepto HERMANO (mismo tema)
+//   - opción nivel 0 → un modelo mental erróneo de fondo
 //   - "No sé"        → nivel 0
 //
 // p2: pregunta de profundidad (binaria), solo si eligió nivel 3.
 //   - correcto: true  → nivel 3 final (lo puede enseñar)
 //   - correcto: false → nivel 2 final (correcto pero superficial)
 //
-// NOTA: las opciones de cada pregunta se redactan con longitud
-// similar para que la correcta no se delate por ser la más larga,
-// y se barajan en tiempo de ejecución para evitar sesgo de posición.
+// PRINCIPIOS DE DISEÑO (para que el quiz mida conocimiento real y
+// no maña para resolver tests):
+//   1. Las CUATRO opciones de p1 son plausibles. No hay distractores
+//      absurdos de otro dominio que se descarten de un vistazo: los
+//      errores son misconcepciones reales y frecuentes (confundir RAM
+//      con disco, Internet con la Web, una variable con el chip, un
+//      protocolo con la aplicación, etc.).
+//   2. La correcta NO se distingue por tener más jerga ni por ser la
+//      más larga. El nivel 3 se separa del nivel 2 por PRECISIÓN, no
+//      por vocabulario. Las longitudes se mantienen parejas.
+//   3. El enunciado no telegrafía la respuesta ni la opción correcta
+//      repite el enunciado palabra por palabra.
+//   4. Las opciones se barajan en tiempo de ejecución (ver Quiz.jsx)
+//      para evitar sesgo de posición.
 // ─────────────────────────────────────────────────────────────
 
 export const QUIZ = {
@@ -109,25 +120,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "La memoria temporal de los procesos activos se llenó y el sistema recurre al disco, que es mucho más lento.",
+            "La memoria de trabajo se llenó y el sistema empieza a usar el disco como respaldo, que es mucho más lento.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "La memoria de trabajo donde la computadora maneja los programas abiertos se quedó sin espacio libre.",
+            "La memoria de trabajo se quedó sin espacio, así que el equipo ya no puede abrir más programas hasta cerrar uno.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "El procesador se saturó porque tiene que ejecutar al mismo tiempo las instrucciones de demasiados programas.",
+            "El procesador no da abasto para ejecutar las instrucciones de tantos programas a la vez y todo responde lento.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "El router no logra gestionar tantas conexiones de red abiertas a la vez y eso termina frenando el equipo.",
+            "El disco de almacenamiento está casi lleno y ya no queda lugar para guardar los datos de los programas abiertos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -161,25 +172,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El componente que ejecuta las instrucciones: con más frecuencia o más núcleos procesa más operaciones por segundo.",
+            "El que ejecuta las instrucciones: con más frecuencia o más núcleos resuelve más operaciones por segundo.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "El procesador, porque es la parte de la computadora encargada de correr y resolver los programas.",
+            "El procesador, porque es donde corre el programa; el de tu amigo es más nuevo y por eso simplemente va más rápido.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "La memoria de trabajo, ya que si tu amigo tiene más cantidad el programa logra abrirse mucho más rápido.",
+            "La memoria de trabajo: como tu amigo tiene más cantidad, el mismo programa logra ejecutarse mucho más rápido.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "El servidor DNS que usa tu amigo es mejor y por eso consigue que el programa cargue en menos tiempo.",
+            "La velocidad de su conexión a internet, ya que de ella depende qué tan rápido puede correr cualquier programa.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -224,13 +235,13 @@ export const QUIZ = {
         {
           id: "c",
           texto:
-            "Cada uno ocupa de forma permanente un núcleo completo del procesador todo el tiempo que está abierto.",
+            "Cada uno ocupa de forma exclusiva un núcleo completo del procesador todo el tiempo que permanece abierto.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Cada uno es un paquete de datos que viaja por la red hasta llegar al servidor que lo está solicitando.",
+            "Cada uno es la ventana que ves en pantalla; al cerrarla deja de existir cualquier rastro suyo en el sistema.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -263,13 +274,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El sistema alterna el CPU entre procesos tan rápido que parece simultáneo, dando fracciones de tiempo a cada uno.",
+            "El sistema reparte el CPU entre procesos en fracciones de tiempo tan breves que el avance parece simultáneo.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "Una función del sistema que le permite tener varios programas ejecutándose al mismo tiempo sin cerrarse.",
+            "Una función que le permite tener varios programas abiertos y funcionando todos a la vez sin que se cierren.",
           nivel: 2,
         },
         {
@@ -281,7 +292,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Una red local que conecta varios dispositivos entre sí para que puedan trabajar juntos de forma coordinada.",
+            "Que el equipo dedica un procesador independiente a cada programa, de modo que cada app corre en el suyo propio.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -310,7 +321,7 @@ export const QUIZ = {
   Multiusuario: {
     p1: {
       pregunta:
-        "En una universidad, 30 alumnos se conectan al mismo servidor Linux con sus cuentas y trabajan de forma independiente. ¿Qué característica del SO lo permite?",
+        "En una universidad, 30 alumnos se conectan a la vez al mismo servidor Linux, cada uno con su cuenta y sus archivos. ¿Qué característica del SO lo permite?",
       opciones: [
         {
           id: "a",
@@ -327,13 +338,13 @@ export const QUIZ = {
         {
           id: "c",
           texto:
-            "Una función que permite correr varios procesos al mismo tiempo dentro del servidor para repartir el trabajo.",
+            "Una función que corre varios procesos al mismo tiempo dentro del servidor para repartir el trabajo de todos.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Un switch que conecta a todas las computadoras de la red para que lleguen juntas hasta el mismo servidor.",
+            "Que el servidor genera una copia completa e independiente del sistema para cada alumno que inicia sesión.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -361,30 +372,30 @@ export const QUIZ = {
   "ls/dir": {
     p1: {
       pregunta:
-        "Estás en la terminal y quieres saber qué archivos hay en la carpeta donde te encuentras. ¿Qué comando usas?",
+        "Estás en la terminal y quieres saber qué archivos hay en la carpeta donde te encuentras. ¿Qué comando usas y qué hace exactamente?",
       opciones: [
         {
           id: "a",
           texto:
-            "ls en Linux (o dir en Windows): lista los archivos y carpetas del directorio actual donde estás situado.",
+            "ls (o dir en Windows): lista el contenido del directorio actual sin cambiarte de ubicación ni abrir nada.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "El comando ls en Linux, o dir en Windows, que sirve para listar los archivos que hay en la carpeta.",
+            "ls en Linux, o dir en Windows: sirve para abrir la carpeta actual y poder ver todo lo que tiene adentro.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "El comando cd, que sirve para ver en qué directorio te encuentras y también todo lo que contiene dentro.",
+            "El comando cd, que te muestra en qué directorio estás situado y además todo lo que se encuentra dentro de él.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "La instrucción SELECT, que se usa para consultar y traer los archivos guardados dentro de la carpeta.",
+            "Hay que abrir uno por uno los archivos para saber cuáles existen; no hay un comando que los liste de golpe.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -423,19 +434,19 @@ export const QUIZ = {
         {
           id: "b",
           texto:
-            "Escribo cd Documentos/Tareas, que es el comando que sirve para cambiarme de una carpeta a otra distinta.",
+            "cd Documentos/Tareas, que es el comando que sirve para moverme de la carpeta donde estoy a otra distinta.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "Escribo ls Documentos/Tareas, que me permite entrar a esa carpeta y a la vez ver el contenido que tiene.",
+            "ls Documentos/Tareas, que me permite entrar a esa carpeta y a la vez ver todo el contenido que tiene dentro.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Escribo ping Documentos/Tareas, que envía una señal hasta la carpeta para poder llegar hasta ella.",
+            "Hay que escribir la ruta completa /home/usuario/Documentos/Tareas; las rutas cortas relativas no funcionan.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -468,25 +479,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "mkdir proyecto crea el directorio; si ya existe da error, y con mkdir -p se crean carpetas anidadas.",
+            "mkdir proyecto crea el directorio en donde estás; si ya existe da error, y con mkdir -p se anidan carpetas.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "Uso el comando mkdir proyecto, que es el que sirve para crear una carpeta nueva donde me encuentro.",
+            "mkdir proyecto, que es justamente el comando que sirve para crear una carpeta nueva donde me encuentro.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "Uso el comando cd proyecto, que crea la carpeta y al mismo tiempo me mete dentro de ella para trabajar.",
+            "cd proyecto, que crea la carpeta nueva y al mismo tiempo me deja dentro de ella para empezar a trabajar.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Uso la instrucción DNS proyecto, que registra el nombre de la carpeta para que el sistema la reconozca.",
+            "Desde la terminal no se pueden crear carpetas; eso solo se hace con clic derecho y 'Nueva carpeta'.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -525,19 +536,19 @@ export const QUIZ = {
         {
           id: "b",
           texto:
-            "Uso ping google.com, que sirve para verificar si existe conexión entre mi equipo y ese host concreto.",
+            "ping google.com, que es el comando que sirve para verificar si hay conexión con ese host en concreto.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "Uso mkdir google.com, que se encarga de crear y dejar establecida la conexión con el host que indico.",
+            "cd google.com, que se encarga de crear y de dejar establecida la conexión hacia el host que le indico.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Uso SELECT google.com, que consulta directamente el estado en el que se encuentra el servidor remoto.",
+            "Basta con mirar el ícono de WiFi; no existe forma de probar un sitio concreto desde la línea de comandos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -577,7 +588,7 @@ export const QUIZ = {
         {
           id: "b",
           texto:
-            "Una LAN, que es básicamente una red local pensada para conectar dispositivos que están físicamente cerca.",
+            "Una LAN, que es una red local pensada para conectar entre sí dispositivos que están físicamente cerca.",
           nivel: 2,
         },
         {
@@ -589,7 +600,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Un proceso, porque es el sistema operativo el que se encarga de administrar todos esos dispositivos juntos.",
+            "No forman ninguna red entre sí: cada dispositivo se conecta por su cuenta a internet de forma totalmente aparte.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -628,7 +639,7 @@ export const QUIZ = {
         {
           id: "b",
           texto:
-            "Una WAN, porque se encarga de conectar entre sí ubicaciones que están en ciudades diferentes y lejanas.",
+            "Una WAN, que es la que se encarga de conectar entre sí ubicaciones situadas en ciudades diferentes y lejanas.",
           nivel: 2,
         },
         {
@@ -640,7 +651,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Una multitarea, porque es lo que permite manejar varias de esas conexiones al mismo tiempo sin saturarse.",
+            "No es una red única: son dos LAN del todo independientes que apenas comparten el mismo nombre de empresa.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -678,7 +689,7 @@ export const QUIZ = {
         {
           id: "b",
           texto:
-            "Internet es la gran red global que se encarga de conectar entre sí a las computadoras de todo el mundo.",
+            "Internet es la gran red mundial que se encarga de conectar entre sí a las computadoras de todo el planeta.",
           nivel: 2,
         },
         {
@@ -690,7 +701,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Internet es en realidad un programa que se ejecuta dentro del navegador para poder mostrar las páginas.",
+            "Internet es el conjunto de páginas web y aplicaciones que usamos a diario a través del navegador del equipo.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -741,7 +752,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "El CPU, que es el componente que procesa y decide internamente hacia qué lugar tienen que ir los datos.",
+            "Ningún aparato lo decide: los paquetes se difunden a toda la red y cada equipo toma los que le corresponden.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -774,7 +785,7 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Un switch: conecta equipos de una LAN y envía los datos solo al destino usando las direcciones MAC.",
+            "Un switch: conecta equipos de una LAN y envía cada trama solo al destino usando las direcciones MAC.",
           nivel: 3,
         },
         {
@@ -792,7 +803,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Un algoritmo, que se encarga de organizar y de ordenar las conexiones entre todas las computadoras.",
+            "Ninguno: cada computadora se conecta con un cable directo hacia cada una de las otras siete de la oficina.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -837,13 +848,13 @@ export const QUIZ = {
         {
           id: "c",
           texto:
-            "El servidor es el router que se ocupa de dirigir la petición hasta la página correcta que se le pidió.",
+            "El servidor es el router que se ocupa de dirigir tu petición hasta llegar a la página correcta que pediste.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "El servidor es una variable que guarda la página completa dentro del programa para mostrarla después.",
+            "El servidor es tu propia computadora, que arma y descarga la página completa por su cuenta sin pedir nada.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -894,7 +905,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "El módem es un proceso que el sistema operativo ejecuta cada vez que la computadora quiere conectarse.",
+            "El módem es el plan de internet que contratas con la compañía, no un aparato distinto del propio router.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -945,7 +956,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Es la capa donde el CPU se encarga de ejecutar una por una las instrucciones que componen el programa.",
+            "Es la parte física del equipo, como el gabinete, la fuente y los componentes internos de la computadora.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -995,7 +1006,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Se encarga de guardar todos los datos dentro de una variable para que después se puedan enviar por la red.",
+            "Traduce el texto que escribe el usuario a un idioma que la otra computadora pueda entender al recibirlo.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1046,7 +1057,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "La multitarea, que es justo lo que va alternando el envío de los datos para que todos puedan avanzar.",
+            "Ninguna capa lo decide: el mensaje viaja por un único cable directo que une el origen con el destino final.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1096,7 +1107,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "TCP y UDP son variables de programación que se utilizan para guardar datos mientras corre el programa.",
+            "TCP y UDP son los dos tipos de cable que se utilizan para conectar físicamente las redes entre sí.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1147,7 +1158,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "La memoria RAM, que es la que se va encargando de ir guardando los datos generados durante la llamada.",
+            "Ninguna capa la sostiene: mientras no cuelgues, los datos de la llamada siguen llegando por su cuenta solos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1198,7 +1209,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "El compilador, que es el encargado de traducir el código del programa para que la máquina lo pueda ejecutar.",
+            "Lo hace el propio navegador con su código interno; el modelo OSI no interviene para nada en ese descifrado.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1249,7 +1260,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Porque en el fondo no son más que procesos que el sistema operativo se encarga de ejecutar cuando hacen falta.",
+            "Porque son las aplicaciones mismas que el usuario abre, como el correo, el navegador o el cliente de archivos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1299,7 +1310,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "HTTPS es básicamente un CPU más rápido y potente que se instala en el servidor del banco para protegerlo.",
+            "HTTPS bloquea el acceso de los atacantes a la página instalando un antivirus dentro del servidor del banco.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1350,7 +1361,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Es la variable que guarda el sitio web dentro del programa para poder volver a mostrarlo más adelante.",
+            "Descarga la página completa de google.com y la guarda en tu equipo para poder mostrártela enseguida.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1401,7 +1412,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Porque cada dispositivo ejecuta un proceso diferente y por esa misma razón necesita también otro número.",
+            "Porque cada dispositivo es de una marca diferente y es eso lo que le asigna su número propio dentro de la red.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1453,7 +1464,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "No, porque un algoritmo solamente puede existir dentro del CPU en forma de señales eléctricas internas.",
+            "No, porque algo solo es un algoritmo si está escrito en un lenguaje de programación dentro de la computadora.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1555,7 +1566,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Un router, que es el dispositivo que se encarga de decidir hacia qué lugar tiene que enviar el dinero.",
+            "Una variable, porque lo que hace es guardar el saldo de la cuenta para después poder compararlo con el monto.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1606,7 +1617,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Los lenguajes compilados necesitan que haya un router disponible para poder distribuir el archivo .exe.",
+            "El .exe es más rápido porque ocupa mucho menos espacio en el disco duro que el código fuente original.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1656,7 +1667,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Que se interpreta porque hay un servidor remoto que es el que se encarga de leerlo desde la distancia.",
+            "Que 'interpretado' significa que el programa se traduce a otro idioma humano, como pasarlo del inglés al español.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1706,7 +1717,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Que el programa termine ejecutándose directamente dentro de la capa física de la red de computadoras.",
+            "El paradigma que vuelve más rápido al programa porque está diseñado para usar la menor memoria posible.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1757,7 +1768,7 @@ export const QUIZ = {
         {
           id: "d",
           texto:
-            "Porque el lenguaje SQL se termina ejecutando dentro de un servidor que está alojado en algún lugar de la nube.",
+            "Porque SQL en realidad no es un lenguaje de programación de verdad, solo sirve para guardar y leer datos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
