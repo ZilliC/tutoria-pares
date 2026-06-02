@@ -39,6 +39,7 @@ export default function Quiz({
   const [terminado, setTerminado] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
+  const [opcionesBarajadas, setOpcionesBarajadas] = useState([]);
 
   // Cargar niveles previos y armar la lista mezclada
   useEffect(() => {
@@ -63,6 +64,22 @@ export default function Quiz({
       activo = false;
     };
   }, [usuario.id, conocidos]);
+
+  // Barajar las opciones de la pregunta actual cada vez que cambia idx o paso.
+  // En P1: mezcla todo excepto "No sé", que queda siempre al final.
+  // En P2: mezcla las dos opciones binarias.
+  useEffect(() => {
+    if (!orden.length || terminado) return;
+    const c = orden[idx];
+    const preg = paso === "p1" ? QUIZ[c].p1 : QUIZ[c].p2;
+    if (paso === "p1") {
+      const noSe = preg.opciones.filter((o) => o.id === "no_se");
+      const otras = shuffle(preg.opciones.filter((o) => o.id !== "no_se"));
+      setOpcionesBarajadas([...otras, ...noSe]);
+    } else {
+      setOpcionesBarajadas(shuffle([...preg.opciones]));
+    }
+  }, [idx, paso, orden, terminado]);
 
   function avanzar(nuevasRespuestas) {
     setRespuestas(nuevasRespuestas);
@@ -172,7 +189,7 @@ export default function Quiz({
           {preg.pregunta}
         </h2>
         <div className="space-y-2">
-          {preg.opciones.map((op) => (
+          {opcionesBarajadas.map((op) => (
             <button
               key={op.id}
               onClick={() =>
