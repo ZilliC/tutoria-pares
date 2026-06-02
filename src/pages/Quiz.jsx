@@ -40,6 +40,7 @@ export default function Quiz({
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
   const [opcionesBarajadas, setOpcionesBarajadas] = useState([]);
+  const [seleccion, setSeleccion] = useState(null); // opción elegida en la pregunta actual, o null
 
   // Cargar niveles previos y armar la lista mezclada
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function Quiz({
   // En P2: mezcla las dos opciones binarias.
   useEffect(() => {
     if (!orden.length || terminado) return;
+    setSeleccion(null);
     const c = orden[idx];
     const preg = paso === "p1" ? QUIZ[c].p1 : QUIZ[c].p2;
     if (paso === "p1") {
@@ -92,22 +94,24 @@ export default function Quiz({
     setPaso(pasoInicial(orden[nextIdx], nivelesPrevios));
   }
 
-  function onResponderP1(op) {
+  // Al pulsar "Continuar" tras ver el feedback: aplica la lógica de niveles y avanza.
+  function continuar() {
+    const op = seleccion;
+    if (!op) return;
     const c = orden[idx];
-    if (op.nivel === 3) {
-      // Candidato a nivel 3 → confirmar con la pregunta de detalle (si existe)
-      if (QUIZ[c].p2) {
-        setPaso("p2");
+    if (paso === "p1") {
+      if (op.nivel === 3) {
+        // Candidato a nivel 3 → confirmar con la pregunta de detalle (si existe)
+        if (QUIZ[c].p2) {
+          setPaso("p2");
+          return;
+        }
+        avanzar({ ...respuestas, [c]: 3 });
         return;
       }
-      avanzar({ ...respuestas, [c]: 3 });
+      avanzar({ ...respuestas, [c]: op.nivel });
       return;
     }
-    avanzar({ ...respuestas, [c]: op.nivel });
-  }
-
-  function onResponderP2(op) {
-    const c = orden[idx];
     avanzar({ ...respuestas, [c]: op.correcto ? 3 : 2 });
   }
 
@@ -189,18 +193,56 @@ export default function Quiz({
           {preg.pregunta}
         </h2>
         <div className="space-y-2">
-          {opcionesBarajadas.map((op) => (
-            <button
-              key={op.id}
-              onClick={() =>
-                paso === "p1" ? onResponderP1(op) : onResponderP2(op)
-              }
-              className="w-full text-left px-4 py-3 rounded-lg border border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-colors text-slate-800"
-            >
-              {op.texto}
-            </button>
-          ))}
+          {opcionesBarajadas.map((op) => {
+            const esCorrecta =
+              paso === "p1" ? op.nivel === 3 : op.correcto === true;
+            const esElegida = seleccion && op.id === seleccion.id;
+            let clase =
+              "w-full text-left px-4 py-3 rounded-lg border transition-colors flex items-start gap-2 ";
+            if (!seleccion) {
+              clase +=
+                "border-slate-300 hover:border-blue-500 hover:bg-blue-50 text-slate-800 cursor-pointer";
+            } else if (esCorrecta) {
+              clase += "border-green-500 bg-green-50 text-green-900";
+            } else if (esElegida) {
+              clase += "border-red-500 bg-red-50 text-red-900";
+            } else {
+              clase += "border-slate-200 text-slate-500 opacity-60";
+            }
+            return (
+              <button
+                key={op.id}
+                onClick={() => !seleccion && setSeleccion(op)}
+                disabled={!!seleccion}
+                className={clase}
+              >
+                {seleccion && (esCorrecta || esElegida) && (
+                  <span className="shrink-0 font-bold">
+                    {esCorrecta ? "✓" : "✗"}
+                  </span>
+                )}
+                <span>{op.texto}</span>
+              </button>
+            );
+          })}
         </div>
+
+        {seleccion && (
+          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-lg p-4">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
+              Explicación
+            </p>
+            <p className="text-sm text-slate-700 leading-relaxed">
+              {preg.explicacion}
+            </p>
+            <button
+              onClick={continuar}
+              className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg"
+            >
+              Continuar
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

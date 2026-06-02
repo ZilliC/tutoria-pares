@@ -142,10 +142,12 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Al abrir muchas apps la RAM se llena y el SO empieza a paginar: mueve datos a disco (memoria virtual). Como el disco es mucho más lento que la RAM, el rendimiento cae. No es el disco lleno ni solo el reparto de CPU.",
     },
     p2: {
       pregunta:
-        "Cuando la memoria RAM se agota, ¿qué hace técnicamente el sistema operativo?",
+        "Cuando la RAM se agota, ¿qué hace el sistema operativo para seguir funcionando?",
       opciones: [
         {
           id: "a",
@@ -160,13 +162,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "El SO usa swap: traslada al disco los datos menos usados para liberar RAM. Funciona, pero acceder al disco es mucho más lento que a la memoria.",
     },
   },
 
   CPU: {
     p1: {
       pregunta:
-        "Un programa tarda 10 segundos en tu computadora y solo 2 en la de tu amigo, con la misma app. ¿Qué componente explica mejor la diferencia?",
+        "Un programa hace cálculos intensivos y tarda 10 s en tu equipo, pero 2 s en el de tu compañero con la misma app y datos. ¿Qué lo explica mejor?",
       opciones: [
         {
           id: "a",
@@ -194,14 +198,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Con la misma app y datos, la diferencia está en cuántas instrucciones por segundo ejecuta el procesador (frecuencia de reloj y/o núcleos). Más RAM o un SSD no aceleran un cálculo que ya cabe en memoria.",
     },
     p2: {
-      pregunta: "¿Qué permite concretamente que un CPU tenga varios núcleos?",
+      pregunta: "¿Qué ventaja real aporta que un CPU tenga más núcleos?",
       opciones: [
         {
           id: "a",
           texto:
-            "Ejecutar varias instrucciones o hilos en paralelo, es decir realmente al mismo tiempo y no por turnos.",
+            "Puede ejecutar varias instrucciones o hilos en paralelo de forma simultánea, repartiendo el trabajo entre ellos.",
           correcto: true,
         },
         {
@@ -211,13 +217,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Más núcleos permiten ejecutar varios hilos o instrucciones en paralelo, repartiendo el trabajo. No hacen más rápida cada instrucción individual.",
     },
   },
 
   Proceso: {
     p1: {
       pregunta:
-        "Tienes abiertos el navegador y el reproductor de música a la vez. ¿Cómo llama el sistema operativo a cada uno y qué implica?",
+        "Tienes abiertos el navegador y un reproductor de música a la vez. En términos del sistema operativo, ¿qué es cada uno?",
       opciones: [
         {
           id: "a",
@@ -245,14 +253,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Cada programa en ejecución es un proceso: una instancia con su propio espacio de memoria y recursos asignados por el SO. No es el archivo en disco ni un simple hilo.",
     },
     p2: {
-      pregunta: "¿Cuál es la diferencia entre un programa y un proceso?",
+      pregunta: "¿En qué se diferencia un proceso de un programa?",
       opciones: [
         {
           id: "a",
           texto:
-            "El programa es el archivo guardado en disco; el proceso es ese programa ya cargado en memoria y ejecutándose.",
+            "El programa es el código almacenado en disco; el proceso es ese programa ya cargado en memoria y en ejecución.",
           correcto: true,
         },
         {
@@ -262,13 +272,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "El programa es el código guardado en disco; el proceso es ese programa ya cargado en memoria y en ejecución.",
     },
   },
 
   Multitarea: {
     p1: {
       pregunta:
-        "Estás escuchando música mientras escribes un documento. ¿Qué característica del sistema operativo lo hace posible?",
+        "Escuchas música mientras escribes un documento en un equipo con un solo núcleo de CPU. ¿Qué permite que ambos programas avancen 'a la vez'?",
       opciones: [
         {
           id: "a",
@@ -296,10 +308,12 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Con un solo núcleo, el SO reparte el tiempo de CPU entre procesos en intervalos muy cortos: parecen simultáneos aunque en cada instante corra solo uno. No requiere varios núcleos ni el modo multiusuario.",
     },
     p2: {
       pregunta:
-        "En un CPU de un solo núcleo, ¿cómo funciona realmente la multitarea?",
+        "En un procesador de un solo núcleo, ¿cómo se logra la multitarea?",
       opciones: [
         {
           id: "a",
@@ -314,6 +328,8 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "El SO conmuta rápidamente entre procesos; en cada instante corre uno solo, pero el cambio es tan veloz que resulta imperceptible.",
     },
   },
 
@@ -348,14 +364,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Un sistema multiusuario gestiona sesiones, permisos y recursos aislados para cada usuario conectado a la vez. La multitarea (repartir CPU) es otra cosa, y no hace falta una máquina virtual por alumno.",
     },
     p2: {
-      pregunta: "¿Qué debe garantizar un sistema multiusuario?",
+      pregunta: "¿Qué es lo esencial que debe garantizar un sistema multiusuario?",
       opciones: [
         {
           id: "a",
           texto:
-            "El aislamiento de permisos y archivos, para que un usuario no acceda a los recursos privados de otro.",
+            "El aislamiento de recursos y permisos, de modo que un usuario no pueda acceder a los archivos privados de otro.",
           correcto: true,
         },
         {
@@ -365,6 +383,8 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Lo esencial es el aislamiento: permisos y recursos separados para que un usuario no acceda a los archivos privados de otro. No exige repartir el rendimiento por igual.",
     },
   },
 
@@ -399,14 +419,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "ls (o dir en Windows) lista el contenido del directorio; con -l muestra además permisos, tamaño y fecha. cd cambia de carpeta y cat muestra el contenido de archivos, no listan el directorio así.",
     },
     p2: {
-      pregunta: "¿Qué muestra de más el comando `ls -a`?",
+      pregunta: "¿Qué hace específicamente la opción -a en `ls -a`?",
       opciones: [
         {
           id: "a",
           texto:
-            "Los archivos ocultos, es decir aquellos cuyo nombre empieza con un punto y normalmente no se listan.",
+            "Muestra también los archivos ocultos, que son aquellos cuyo nombre comienza con un punto.",
           correcto: true,
         },
         {
@@ -416,13 +438,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "ls -a muestra también los archivos ocultos, que en Linux son los que empiezan con un punto. Ver los atributos es lo que hace la opción -l.",
     },
   },
 
   cd: {
     p1: {
       pregunta:
-        "Estás en /home/usuario y necesitas ir a /home/usuario/Documentos/Tareas. ¿Qué comando escribes?",
+        "Estás en /home/ana y quieres trabajar en /home/ana/proyectos/web sin escribir la ruta completa desde la raíz. ¿Qué escribes?",
       opciones: [
         {
           id: "a",
@@ -450,14 +474,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Desde /home/ana, `cd proyectos/web` usa una ruta relativa al directorio actual. Empezar con / la haría absoluta (otra carpeta) y ~ apunta al home del usuario.",
     },
     p2: {
-      pregunta: "¿Cuál es la diferencia entre `cd ..` y `cd /`?",
+      pregunta: "¿Qué diferencia hay entre una ruta absoluta y una relativa al usar cd?",
       opciones: [
         {
           id: "a",
           texto:
-            "`cd ..` sube un nivel hacia el directorio padre; `cd /` te lleva directo a la raíz del sistema de archivos.",
+            "La absoluta parte de la raíz (/) y es siempre la misma; la relativa parte del directorio actual donde estés.",
           correcto: true,
         },
         {
@@ -467,13 +493,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "La ruta absoluta parte siempre de la raíz (/) y es la misma estés donde estés; la relativa parte del directorio actual en el que te encuentras.",
     },
   },
 
   mkdir: {
     p1: {
       pregunta:
-        "Necesitas crear una carpeta llamada 'proyecto' en tu directorio actual. ¿Qué comando usas?",
+        "Necesitas crear una carpeta nueva llamada 'entrega' en el directorio actual. ¿Qué comando usas y qué ocurre si ya existe una con ese nombre?",
       opciones: [
         {
           id: "a",
@@ -501,9 +529,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "mkdir entrega crea la carpeta; si ya existe, falla con un error de 'directorio existente'. cd no crea carpetas y touch crea archivos, no directorios.",
     },
     p2: {
-      pregunta: "¿Qué hace `mkdir -p a/b/c`?",
+      pregunta: "¿Para qué sirve la opción -p en `mkdir -p a/b/c`?",
       opciones: [
         {
           id: "a",
@@ -518,13 +548,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "mkdir -p crea toda la ruta, generando las carpetas intermedias que falten (a y b), sin dar error si ya existen.",
     },
   },
 
   ping: {
     p1: {
       pregunta:
-        "Quieres saber si tu computadora puede comunicarse con google.com. ¿Qué comando usas?",
+        "Quieres comprobar si tu equipo tiene conectividad con el servidor de google.com y medir cuánto tarda en responder. ¿Qué herramienta usas?",
       opciones: [
         {
           id: "a",
@@ -552,14 +584,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "ping envía paquetes ICMP de eco y mide el tiempo de ida y vuelta para comprobar conectividad. traceroute y nslookup tienen otros fines (la ruta y la resolución de nombres).",
     },
     p2: {
-      pregunta: "Si ping no recibe respuesta, ¿qué puedes concluir?",
+      pregunta: "Si haces ping a un sitio y no obtienes respuesta, ¿qué puedes concluir con certeza?",
       opciones: [
         {
           id: "a",
           texto:
-            "Puede haber un problema de red, el host caído o un firewall bloqueando ICMP; no que el sitio esté caído.",
+            "Poco por sí solo: el host podría estar activo pero con ICMP bloqueado por un firewall, o la ruta podría fallar.",
           correcto: true,
         },
         {
@@ -569,6 +603,8 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "La falta de respuesta no prueba que el host esté caído: puede tener ICMP bloqueado por un firewall o haber un fallo en la ruta. Por sí solo el ping concluye poco.",
     },
   },
 
@@ -576,7 +612,7 @@ export const QUIZ = {
   LAN: {
     p1: {
       pregunta:
-        "En tu casa tienes 3 computadoras y un celular conectados al mismo router WiFi. ¿Qué tipo de red forman?",
+        "En una oficina, 20 equipos están conectados entre sí mediante switches dentro del mismo edificio, sin salir a internet. ¿Qué tipo de red constituyen?",
       opciones: [
         {
           id: "a",
@@ -604,14 +640,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Equipos en un área reducida (un edificio) conectados por switches forman una LAN, que permite compartir recursos. No es una MAN (mayor alcance) ni define por sí sola una intranet.",
     },
     p2: {
-      pregunta: "¿Una LAN necesita internet para funcionar?",
+      pregunta: "¿Qué se necesita para que los equipos de una LAN compartan archivos entre sí?",
       opciones: [
         {
           id: "a",
           texto:
-            "No: los dispositivos de una LAN pueden compartir archivos e impresoras entre sí sin conexión a internet.",
+            "Nada más que la propia red local; pueden comunicarse directamente sin que exista conexión a internet.",
           correcto: true,
         },
         {
@@ -621,13 +659,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "En una LAN los equipos se comunican directamente entre sí; no hace falta una conexión a internet para compartir archivos.",
     },
   },
 
   WAN: {
     p1: {
       pregunta:
-        "Una empresa tiene oficinas en CDMX y Monterrey interconectadas. ¿Qué tipo de red describe mejor esa conexión?",
+        "Una empresa enlaza sus sucursales de Guadalajara, Mérida y Tijuana mediante enlaces contratados a un operador de telecomunicaciones. ¿Qué red forman?",
       opciones: [
         {
           id: "a",
@@ -655,14 +695,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Enlazar sucursales en ciudades distintas mediante enlaces de un operador es una WAN: conecta redes geográficamente dispersas sobre infraestructura de terceros. No es internet ni una VPN.",
     },
     p2: {
-      pregunta: "¿De quién suele ser la infraestructura física de una WAN?",
+      pregunta: "¿Por qué una WAN suele depender de proveedores externos?",
       opciones: [
         {
           id: "a",
           texto:
-            "A menudo de proveedores de telecomunicaciones que rentan los enlaces, no de la propia empresa que la usa.",
+            "Porque tender y mantener enlaces de larga distancia es muy costoso, así que se contratan a operadores que ya los tienen.",
           correcto: true,
         },
         {
@@ -672,12 +714,14 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Tender y mantener enlaces de larga distancia es muy costoso, así que se contratan a operadores que ya los poseen. No hay una prohibición legal de fondo.",
     },
   },
 
   Internet: {
     p1: {
-      pregunta: "¿Cuál es la diferencia entre Internet y una WAN?",
+      pregunta: "¿Cuál es la relación correcta entre Internet y el concepto de WAN?",
       opciones: [
         {
           id: "a",
@@ -705,14 +749,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Internet es una WAN específica: la red pública mundial de redes interconectadas mediante TCP/IP. No toda WAN es internet, y no es el navegador.",
     },
     p2: {
-      pregunta: "¿Qué hace posible que redes muy distintas formen Internet?",
+      pregunta: "¿Qué distingue a la World Wide Web de Internet?",
       opciones: [
         {
           id: "a",
           texto:
-            "El conjunto de protocolos estándar TCP/IP, que permite que redes muy distintas se entiendan entre sí.",
+            "La Web es un servicio (páginas enlazadas vía HTTP) que funciona sobre Internet, la infraestructura de red subyacente.",
           correcto: true,
         },
         {
@@ -722,6 +768,8 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "La Web es un servicio (páginas enlazadas vía HTTP) que funciona sobre internet, la infraestructura de red subyacente. No son lo mismo.",
     },
   },
 
@@ -756,9 +804,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "El router opera en la capa 3 y, según la IP de destino, decide por qué ruta reenviar cada paquete entre redes. El switch trabaja dentro de la LAN y el módem solo traduce la señal.",
     },
     p2: {
-      pregunta: "¿En qué capa del modelo OSI opera principalmente un router?",
+      pregunta: "¿En qué se basa un router para decidir por dónde enviar un paquete?",
       opciones: [
         {
           id: "a",
@@ -773,13 +823,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "El router decide según la IP de destino, que consulta en su tabla de enrutamiento para elegir el siguiente salto. La MAC la usa el switch dentro de la LAN.",
     },
   },
 
   Switch: {
     p1: {
       pregunta:
-        "Tienes 8 computadoras en una oficina que necesitan comunicarse entre sí. ¿Qué dispositivo usas?",
+        "En una LAN con 24 equipos necesitas un dispositivo que reciba cada trama y la entregue solo al equipo destinatario, sin inundar a los demás. ¿Cuál usas?",
       opciones: [
         {
           id: "a",
@@ -807,9 +859,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "El switch aprende las direcciones MAC y reenvía cada trama solo al puerto del destinatario. El hub inunda a todos y el router opera entre redes, no dentro de la LAN.",
     },
     p2: {
-      pregunta: "¿Cómo decide un switch a qué puerto enviar una trama?",
+      pregunta: "¿Cómo sabe un switch a qué puerto enviar una trama destinada a cierto equipo?",
       opciones: [
         {
           id: "a",
@@ -824,13 +878,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "El switch mantiene una tabla MAC-puerto que aprende observando el tráfico; así sabe a qué puerto enviar cada trama. No usa direcciones IP.",
     },
   },
 
   Servidor: {
     p1: {
       pregunta:
-        "Cuando escribes una URL y aparece una página web, ¿qué función cumple el servidor en ese proceso?",
+        "Escribes una URL y el navegador muestra la página. ¿Qué papel cumple el servidor en ese intercambio?",
       opciones: [
         {
           id: "a",
@@ -858,9 +914,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "El servidor recibe la petición del cliente, localiza o genera el recurso solicitado y devuelve la respuesta. No es un mero almacén ni es el navegador quien decide el contenido.",
     },
     p2: {
-      pregunta: "En el modelo cliente-servidor, ¿quién inicia la comunicación?",
+      pregunta: "En el modelo cliente-servidor, ¿quién inicia normalmente la comunicación?",
       opciones: [
         {
           id: "a",
@@ -875,13 +933,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "En el modelo cliente-servidor el cliente inicia: envía la petición y el servidor, que está a la escucha, responde.",
     },
   },
 
   "Módem": {
     p1: {
       pregunta:
-        "¿Por qué necesitas un módem para conectarte a internet si ya tienes un router en casa?",
+        "Tu proveedor lleva la señal hasta tu casa por un cable. ¿Cuál es la función específica del módem, frente a la del router?",
       opciones: [
         {
           id: "a",
@@ -909,14 +969,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "El módem modula y demodula: convierte la señal entre el formato del proveedor y el digital de tu red. El router solo distribuye esa conexión entre tus dispositivos.",
     },
     p2: {
-      pregunta: "¿Qué hace fundamentalmente un módem?",
+      pregunta: "¿Qué significa, técnicamente, que un módem 'module y demodule'?",
       opciones: [
         {
           id: "a",
           texto:
-            "Modula y demodula señales para adaptarlas entre medios, por ejemplo de digital a la línea del proveedor.",
+            "Que transforma señales de un medio a otro: convierte los datos digitales en la señal que viaja por la línea, y al revés.",
           correcto: true,
         },
         {
@@ -926,13 +988,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Modular/demodular es transformar la señal de un medio a otro: convierte los datos digitales en la señal que viaja por la línea, y al revés. No es amplificar.",
     },
   },
 
   "Capa Física": {
     p1: {
       pregunta:
-        "En el modelo OSI, ¿de qué se encarga la capa más baja y qué ejemplos la representan?",
+        "¿Qué función corresponde a la capa física del modelo OSI?",
       opciones: [
         {
           id: "a",
@@ -960,14 +1024,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "La capa física transmite los bits como señales por el medio, definiendo voltajes, codificación y temporización. Detectar errores agrupando bits en tramas es de la capa de enlace.",
     },
     p2: {
-      pregunta: "¿Cuál de estos es un ejemplo de la capa física?",
+      pregunta: "¿Cuál de los siguientes pertenece a la capa física?",
       opciones: [
         {
           id: "a",
           texto:
-            "El conector RJ45 o el cable de fibra óptica, que son el medio por donde viaja físicamente la señal.",
+            "Las características eléctricas del cable y los conectores, como los niveles de voltaje que representan un 0 y un 1.",
           correcto: true,
         },
         {
@@ -977,12 +1043,14 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Las características eléctricas del cable y los conectores (los voltajes que representan un 0 y un 1) son de la capa física. La dirección MAC pertenece a la capa de enlace.",
     },
   },
 
   "Enlace de datos": {
     p1: {
-      pregunta: "¿Qué problema resuelve la capa de Enlace de datos y cómo lo hace?",
+      pregunta: "Dos equipos conectados al mismo switch intercambian datos. ¿De qué se encarga la capa de enlace de datos en esa comunicación?",
       opciones: [
         {
           id: "a",
@@ -1010,14 +1078,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "La capa de enlace entrega tramas entre nodos de la misma red usando direcciones MAC y detecta errores de la capa física. Elegir la ruta entre redes es de la capa de red.",
     },
     p2: {
-      pregunta: "¿Qué tipo de dirección usa la capa de Enlace de datos?",
+      pregunta: "¿Qué tipo de dirección utiliza la capa de enlace de datos para identificar a los equipos?",
       opciones: [
         {
           id: "a",
           texto:
-            "Direcciones MAC, también llamadas físicas, que son únicas para cada interfaz o tarjeta de red existente.",
+            "La dirección MAC, un identificador físico único asociado a la interfaz de red de cada dispositivo.",
           correcto: true,
         },
         {
@@ -1027,13 +1097,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Usa la dirección MAC, un identificador físico asociado a la interfaz de red de cada equipo. La dirección IP corresponde a la capa de red.",
     },
   },
 
   "Capa de Red": {
     p1: {
       pregunta:
-        "Cuando envías un mensaje de CDMX a Tokio, ¿qué capa del OSI decide el camino que toman los datos?",
+        "Un paquete debe viajar desde una red en México hasta otra en Japón, atravesando muchas redes intermedias. ¿Qué capa del OSI determina la ruta?",
       opciones: [
         {
           id: "a",
@@ -1061,9 +1133,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "La capa de red usa las direcciones IP y los routers para decidir el camino entre redes distintas. La de transporte controla el envío extremo a extremo, no elige la ruta.",
     },
     p2: {
-      pregunta: "¿Qué dispositivo es el ejemplo clásico de la capa de red?",
+      pregunta: "¿Qué dispositivo trabaja principalmente en la capa de red?",
       opciones: [
         {
           id: "a",
@@ -1078,12 +1152,14 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "El router trabaja en la capa de red: reenvía paquetes entre redes distintas según la IP de destino. El switch opera en la capa de enlace con direcciones MAC.",
     },
   },
 
   Transporte: {
     p1: {
-      pregunta: "¿Cuál es la diferencia entre TCP y UDP, y cuándo usarías cada uno?",
+      pregunta: "Una aplicación debe enviar datos y elegir entre TCP y UDP. ¿Cuál es la diferencia esencial entre ambos?",
       opciones: [
         {
           id: "a",
@@ -1111,9 +1187,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "TCP da entrega confiable, ordenada y con control de flujo; UDP no garantiza entrega ni orden, pero tiene menos sobrecarga. La diferencia no es el cifrado ni el alcance de red.",
     },
     p2: {
-      pregunta: "¿Por qué se usa UDP en videollamadas en vivo?",
+      pregunta: "¿Por qué una videollamada en tiempo real suele usar UDP?",
       opciones: [
         {
           id: "a",
@@ -1128,13 +1206,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Una videollamada prioriza la baja latencia: reenviar un paquete atrasado no sirve, es mejor seguir con los datos recientes. Por eso UDP, que no espera confirmaciones.",
     },
   },
 
   "Sesión": {
     p1: {
       pregunta:
-        "Cuando haces una videollamada de Zoom de 1 hora, ¿qué capa del OSI mantiene esa conexión abierta toda la llamada?",
+        "Durante una videollamada de una hora, ¿qué capa del OSI establece, mantiene y finaliza el diálogo entre las aplicaciones?",
       opciones: [
         {
           id: "a",
@@ -1162,9 +1242,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "La capa de sesión abre, sincroniza (con puntos de control) y cierra ordenadamente el diálogo entre aplicaciones. Mantener la conexión TCP es de transporte; el formato, de presentación.",
     },
     p2: {
-      pregunta: "¿Cuál es la responsabilidad principal de la capa de sesión?",
+      pregunta: "¿Qué función es propia de la capa de sesión y no de otras?",
       opciones: [
         {
           id: "a",
@@ -1179,13 +1261,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Lo propio de la sesión es gestionar y sincronizar el diálogo entre aplicaciones, con puntos de control para reanudarlo tras una interrupción. La entrega sin errores es de transporte.",
     },
   },
 
   "Presentación": {
     p1: {
       pregunta:
-        "Cuando tu navegador recibe una página cifrada con HTTPS y la muestra bien, ¿qué capa del OSI participa en el descifrado y el formato?",
+        "Tu navegador recibe datos cifrados con HTTPS y los muestra como texto e imágenes legibles. ¿Qué capa del OSI se ocupa del descifrado y la conversión de formato?",
       opciones: [
         {
           id: "a",
@@ -1213,14 +1297,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "La capa de presentación traduce, comprime y descifra los datos para que la aplicación pueda interpretarlos. No es la de aplicación ni la de transporte.",
     },
     p2: {
-      pregunta: "¿Cuál de estas tareas pertenece a la capa de presentación?",
+      pregunta: "¿Cuál de estas tareas es propia de la capa de presentación?",
       opciones: [
         {
           id: "a",
           texto:
-            "El cifrado y el descifrado junto con la conversión del formato de los datos, como la codificación de caracteres.",
+            "Convertir la codificación de los caracteres y aplicar el cifrado o descifrado de los datos transmitidos.",
           correcto: true,
         },
         {
@@ -1230,13 +1316,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Convertir la codificación de los caracteres y aplicar el cifrado o descifrado es propio de la capa de presentación. Determinar la ruta es de la capa de red.",
     },
   },
 
   "Aplicación": {
     p1: {
       pregunta:
-        "¿Por qué HTTP, FTP y SMTP son protocolos de la capa de aplicación y no de otra capa?",
+        "¿Por qué se dice que HTTP, FTP y SMTP pertenecen a la capa de aplicación del modelo OSI?",
       opciones: [
         {
           id: "a",
@@ -1264,14 +1352,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "HTTP, FTP y SMTP definen cómo las aplicaciones intercambian datos por la red: son protocolos, no la app en sí ni la gestión de sesión.",
     },
     p2: {
-      pregunta: "¿El navegador en sí es la capa de aplicación del modelo OSI?",
+      pregunta: "¿El navegador web 'es' la capa de aplicación del modelo OSI?",
       opciones: [
         {
           id: "a",
           texto:
-            "No: el navegador es la aplicación; la capa de aplicación son los protocolos, como HTTP, que ese navegador usa.",
+            "No: el navegador es un programa; la capa de aplicación son los protocolos, como HTTP, que ese programa utiliza.",
           correcto: true,
         },
         {
@@ -1281,12 +1371,14 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "No: el navegador es un programa; la capa de aplicación son los protocolos (como HTTP) que ese programa utiliza para comunicarse.",
     },
   },
 
   "HTTP/HTTPS": {
     p1: {
-      pregunta: "¿Por qué los bancos usan HTTPS y no HTTP, y qué diferencia concreta hay?",
+      pregunta: "Un banco exige HTTPS en lugar de HTTP. ¿Cuál es la diferencia técnica que justifica esa exigencia?",
       opciones: [
         {
           id: "a",
@@ -1314,9 +1406,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "HTTPS cifra la comunicación con TLS: aunque alguien intercepte el tráfico, no puede leerlo ni alterarlo. No solo verifica el certificado dejando los datos en claro.",
     },
     p2: {
-      pregunta: "¿Qué agrega técnicamente la 'S' de HTTPS?",
+      pregunta: "¿Qué aporta concretamente la capa TLS que usa HTTPS?",
       opciones: [
         {
           id: "a",
@@ -1331,13 +1425,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "TLS cifra el canal y autentica al servidor mediante certificados, protegiendo la confidencialidad y la integridad de los datos. No es que 'acelere' la conexión.",
     },
   },
 
   DNS: {
     p1: {
       pregunta:
-        "Cuando escribes 'google.com' en el navegador, ¿qué hace el DNS antes de que cargue la página?",
+        "Escribes 'google.com' en el navegador. ¿Qué tarea realiza el DNS antes de que se establezca la conexión?",
       opciones: [
         {
           id: "a",
@@ -1365,9 +1461,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "El DNS resuelve el nombre de dominio a su dirección IP, porque la conexión se establece con la IP y no con el nombre. No localiza el servidor más cercano ni valida certificados.",
     },
     p2: {
-      pregunta: "¿Qué pasa si la resolución DNS falla?",
+      pregunta: "Si el servidor DNS no logra resolver un dominio, ¿qué ocurre?",
       opciones: [
         {
           id: "a",
@@ -1382,13 +1480,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Sin resolución DNS el navegador no obtiene la IP del sitio, así que no puede conectarse aunque el servidor web esté funcionando.",
     },
   },
 
   "Dirección IP": {
     p1: {
       pregunta:
-        "Tu celular y tu laptop están en la misma red WiFi. ¿Por qué cada uno necesita una dirección IP diferente?",
+        "Dos dispositivos en la misma red WiFi tienen IPs distintas. ¿Por qué es necesario que cada uno tenga una dirección única?",
       opciones: [
         {
           id: "a",
@@ -1416,14 +1516,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Cada equipo necesita una IP única para que el enrutamiento entregue cada paquete al destino correcto; dos IPs iguales provocan un conflicto de direcciones.",
     },
     p2: {
-      pregunta: "¿Cuál es la diferencia entre una IP pública y una privada?",
+      pregunta: "¿Qué diferencia hay entre una dirección IP privada y una pública?",
       opciones: [
         {
           id: "a",
           texto:
-            "Las privadas identifican dispositivos dentro de la red local; la pública identifica a toda la red en internet.",
+            "La privada identifica al equipo dentro de la red local; la pública identifica a toda esa red ante internet.",
           correcto: true,
         },
         {
@@ -1433,6 +1535,8 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "La IP privada identifica al equipo dentro de la red local; la pública identifica a toda esa red ante internet.",
     },
   },
 
@@ -1440,7 +1544,7 @@ export const QUIZ = {
   Algoritmo: {
     p1: {
       pregunta:
-        "Tu amigo dice que una receta de cocina es un algoritmo. ¿Tiene razón? ¿Por qué?",
+        "¿Bajo qué condición una receta de cocina puede considerarse, en sentido estricto, un algoritmo?",
       opciones: [
         {
           id: "a",
@@ -1468,9 +1572,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Una receta es algoritmo solo si sus pasos son precisos, finitos y no ambiguos y llevan siempre a un resultado; 'sazonar al gusto' lo descalifica por ambiguo.",
     },
     p2: {
-      pregunta: "¿Qué propiedad es imprescindible para que algo sea un algoritmo?",
+      pregunta: "¿Cuál es una propiedad imprescindible de todo algoritmo?",
       opciones: [
         {
           id: "a",
@@ -1485,13 +1591,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Todo algoritmo debe terminar en un número finito de pasos y tener cada paso definido sin ambigüedad. No necesita ejecutarse en una computadora.",
     },
   },
 
   Variable: {
     p1: {
       pregunta:
-        "En un programa que calcula el promedio de calificaciones, ¿qué papel juega una variable y qué la diferencia de una constante?",
+        "En un programa que promedia calificaciones, ¿qué caracteriza a una variable frente a una constante?",
       opciones: [
         {
           id: "a",
@@ -1519,14 +1627,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Una variable es un espacio de memoria con nombre cuyo valor puede cambiar durante la ejecución; la constante no varía. No se distinguen por el tipo de dato que guardan.",
     },
     p2: {
-      pregunta: "¿Qué distingue a una variable de una constante?",
+      pregunta: "¿Qué distingue de raíz a una variable de una constante?",
       opciones: [
         {
           id: "a",
           texto:
-            "Que el valor de una variable se puede reasignar mientras corre el programa, y el de una constante no cambia.",
+            "Que el valor de una variable puede reasignarse mientras el programa corre, mientras que el de una constante no.",
           correcto: true,
         },
         {
@@ -1536,13 +1646,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Lo que las distingue de raíz es que el valor de una variable puede reasignarse mientras el programa corre, y el de una constante no.",
     },
   },
 
   "Estructura de control": {
     p1: {
       pregunta:
-        "Un cajero verifica tu saldo antes de darte dinero y, si no hay suficiente, muestra un error. ¿Qué tipo de estructura de control es?",
+        "Un cajero comprueba el saldo y, según el resultado, entrega el dinero o muestra un error. ¿Qué estructura de control modela ese comportamiento?",
       opciones: [
         {
           id: "a",
@@ -1570,14 +1682,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Evaluar una condición y ejecutar un bloque distinto según el resultado es una estructura de selección (if/else). No es una iteración (repetir) ni una secuencia.",
     },
     p2: {
-      pregunta: "¿Cuál es la diferencia central entre una selección (if) y una iteración (bucle)?",
+      pregunta: "¿Cuál es la diferencia esencial entre una selección y una iteración?",
       opciones: [
         {
           id: "a",
           texto:
-            "La selección decide si ejecutar un bloque una vez según la condición; la iteración lo repite mientras se cumpla.",
+            "La selección ejecuta un bloque a lo sumo una vez según una condición; la iteración lo repite mientras esta se cumpla.",
           correcto: true,
         },
         {
@@ -1587,13 +1701,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "La selección ejecuta un bloque a lo sumo una vez según una condición; la iteración lo repite mientras esa condición se cumpla.",
     },
   },
 
   Compilado: {
     p1: {
       pregunta:
-        "Un programa en C se compila una vez y se distribuye como ejecutable (.exe). ¿Qué ventaja concreta tiene sobre uno interpretado?",
+        "Un programa en C se compila a un ejecutable que se distribuye a los usuarios. Frente a un lenguaje interpretado, ¿qué ventaja aporta la compilación?",
       opciones: [
         {
           id: "a",
@@ -1621,14 +1737,16 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "Al compilar, el código ya queda traducido a lenguaje máquina y se ejecuta directo sobre el hardware, sin traducirse en el momento. Eso no lo hace universal entre sistemas.",
     },
     p2: {
-      pregunta: "¿Un .exe ya compilado necesita el compilador instalado en la máquina donde corre?",
+      pregunta: "¿Necesita el usuario tener el compilador instalado para ejecutar un programa ya compilado?",
       opciones: [
         {
           id: "a",
           texto:
-            "No: como ya es código máquina, el compilador solo hace falta para construirlo, pero no para ejecutarlo.",
+            "No: el compilador solo se usa al construir el ejecutable; una vez generado, este corre por sí solo.",
           correcto: true,
         },
         {
@@ -1638,12 +1756,14 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "No: el compilador solo se usa al construir el ejecutable. Una vez generado, este corre por sí solo sin necesidad del compilador.",
     },
   },
 
   Interpretado: {
     p1: {
-      pregunta: "Python es interpretado. ¿Qué significa eso en la práctica al ejecutar un script línea por línea?",
+      pregunta: "Ejecutas un script de Python. ¿Qué implica, en la práctica, que Python sea un lenguaje interpretado?",
       opciones: [
         {
           id: "a",
@@ -1671,9 +1791,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "En un lenguaje interpretado, un intérprete traduce y ejecuta el código sobre la marcha; un error en una línea detiene la ejecución al llegar a ella. No se compila todo antes.",
     },
     p2: {
-      pregunta: "¿Por qué un programa interpretado necesita el intérprete en la máquina que lo ejecuta?",
+      pregunta: "¿Por qué se necesita el intérprete instalado en la máquina donde corre el programa?",
       opciones: [
         {
           id: "a",
@@ -1688,12 +1810,14 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "La traducción del código ocurre en tiempo de ejecución, así que sin el intérprete instalado no hay nada que lo procese.",
     },
   },
 
   Imperativo: {
     p1: {
-      pregunta: "En la programación imperativa le dices a la computadora CÓMO hacer algo. ¿Qué ejemplo lo ilustra mejor?",
+      pregunta: "El paradigma imperativo se caracteriza por indicar a la máquina CÓMO hacer las cosas. ¿Qué ejemplo lo refleja con mayor precisión?",
       opciones: [
         {
           id: "a",
@@ -1721,9 +1845,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "El imperativo indica CÓMO: un ciclo que recorre una lista sumando elementos, donde el programador define cada paso y controla el flujo. Una consulta SQL o reglas lógicas son declarativas.",
     },
     p2: {
-      pregunta: "¿Cuál es el rasgo clave del paradigma imperativo?",
+      pregunta: "¿Cuál es el rasgo definitorio del paradigma imperativo?",
       opciones: [
         {
           id: "a",
@@ -1738,13 +1864,15 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "Lo definitorio del imperativo es describir explícitamente la secuencia de pasos y los cambios de estado que llevan hasta el resultado. Describir solo el resultado es declarativo.",
     },
   },
 
   Declarativo: {
     p1: {
       pregunta:
-        "En SQL escribes SELECT * FROM alumnos WHERE promedio > 8. ¿Por qué eso es programación declarativa y no imperativa?",
+        "La consulta SQL `SELECT * FROM alumnos WHERE promedio > 8` se considera declarativa. ¿Por qué?",
       opciones: [
         {
           id: "a",
@@ -1772,9 +1900,11 @@ export const QUIZ = {
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
       ],
+      explicacion:
+        "SQL es declarativo porque expresas QUÉ datos quieres, no CÓMO obtenerlos; el motor decide internamente la forma más eficiente. No describe el recorrido paso a paso.",
     },
     p2: {
-      pregunta: "En la programación declarativa, ¿quién decide los pasos exactos para obtener el resultado?",
+      pregunta: "En un programa declarativo, ¿quién determina los pasos concretos para llegar al resultado?",
       opciones: [
         {
           id: "a",
@@ -1789,6 +1919,8 @@ export const QUIZ = {
           correcto: false,
         },
       ],
+      explicacion:
+        "En lo declarativo, el sistema o motor de ejecución (como el optimizador de consultas) determina los pasos concretos, no la persona que programa.",
     },
   },
 };
