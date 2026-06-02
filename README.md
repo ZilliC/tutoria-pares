@@ -150,4 +150,4 @@ Las opciones se barajan automáticamente en tiempo de ejecución para evitar ses
 
 ## Versión actual
 
-**Alpha 1.1.3**
+**Alpha 1.1.4**

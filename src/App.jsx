@@ -165,7 +165,7 @@ export default function App() {
     <>
       {renderPagina()}
       <div className="fixed top-2 right-2 text-[10px] text-slate-400 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full font-mono z-50 pointer-events-none select-none shadow-sm">
-        Alpha 1.1.3
+        Alpha 1.1.4
       </div>
     </>
   );
