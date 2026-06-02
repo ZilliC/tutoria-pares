@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { QUIZ } from "../data/quiz.js";
 import {
   guardarModelos,
@@ -16,6 +16,14 @@ function shuffle(arr) {
   return a;
 }
 
+// Si el alumno ya domina el concepto (nivel >= 2), saltamos directo a la
+// pregunta de detalle (p2) en vez de repetir la de identificación (p1).
+function pasoInicial(concepto, nivelesPrevios) {
+  const previo = (nivelesPrevios && nivelesPrevios[concepto]) || 0;
+  if (previo >= 2 && QUIZ[concepto] && QUIZ[concepto].p2) return "p2";
+  return "p1";
+}
+
 export default function Quiz({
   usuario,
   conocidos,
@@ -26,12 +34,13 @@ export default function Quiz({
   const [nivelesPrevios, setNivelesPrevios] = useState(null);
   const [orden, setOrden] = useState([]);
   const [idx, setIdx] = useState(0);
+  const [paso, setPaso] = useState("p1"); // "p1" | "p2"
   const [respuestas, setRespuestas] = useState({}); // concepto -> nivel final
   const [terminado, setTerminado] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
 
-  // Cargar niveles previos y armar la lista shuffled
+  // Cargar niveles previos y armar la lista mezclada
   useEffect(() => {
     let activo = true;
     obtenerModelos(usuario.id)
@@ -45,6 +54,7 @@ export default function Quiz({
           setTerminado(true);
           return;
         }
+        setPaso(pasoInicial(lista[0], m));
       })
       .catch((e) => {
         if (activo) setError(e.message);
@@ -62,12 +72,26 @@ export default function Quiz({
       return;
     }
     setIdx(nextIdx);
+    setPaso(pasoInicial(orden[nextIdx], nivelesPrevios));
   }
 
-  function onResponder(op) {
+  function onResponderP1(op) {
     const c = orden[idx];
-    const nivel = QUIZ[c].niveles[op.id] ?? 0;
-    avanzar({ ...respuestas, [c]: nivel });
+    if (op.nivel === 3) {
+      // Candidato a nivel 3 → confirmar con la pregunta de detalle (si existe)
+      if (QUIZ[c].p2) {
+        setPaso("p2");
+        return;
+      }
+      avanzar({ ...respuestas, [c]: 3 });
+      return;
+    }
+    avanzar({ ...respuestas, [c]: op.nivel });
+  }
+
+  function onResponderP2(op) {
+    const c = orden[idx];
+    avanzar({ ...respuestas, [c]: op.correcto ? 3 : 2 });
   }
 
   // Estados de carga / error
@@ -104,7 +128,7 @@ export default function Quiz({
   }
 
   const c = orden[idx];
-  const preg = QUIZ[c];
+  const preg = paso === "p1" ? QUIZ[c].p1 : QUIZ[c].p2;
   const totalConceptos = orden.length;
 
   return (
@@ -112,6 +136,11 @@ export default function Quiz({
       <div className="flex justify-between items-center mb-4">
         <div className="text-sm text-slate-500">
           Pregunta {idx + 1} de {totalConceptos}
+          {paso === "p2" && (
+            <span className="ml-2 text-xs text-blue-600 font-medium">
+              · detalle
+            </span>
+          )}
         </div>
         <button
           onClick={onLogout}
@@ -128,9 +157,15 @@ export default function Quiz({
         />
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg p-3 mb-4">
-        Si no estás seguro, selecciona <strong>No sé</strong>. No adivines.
-      </div>
+      {paso === "p1" ? (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg p-3 mb-4">
+          Si no estás seguro, selecciona <strong>No sé</strong>. No adivines.
+        </div>
+      ) : (
+        <div className="bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded-lg p-3 mb-4">
+          Pregunta de detalle: elige la opción que sea exactamente correcta.
+        </div>
+      )}
 
       <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
         <h2 className="text-lg font-semibold text-slate-800 mb-4">
@@ -140,7 +175,9 @@ export default function Quiz({
           {preg.opciones.map((op) => (
             <button
               key={op.id}
-              onClick={() => onResponder(op)}
+              onClick={() =>
+                paso === "p1" ? onResponderP1(op) : onResponderP2(op)
+              }
               className="w-full text-left px-4 py-3 rounded-lg border border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-colors text-slate-800"
             >
               {op.texto}
@@ -160,6 +197,13 @@ function Centro({ children }) {
   );
 }
 
+const RESUMEN_NIVELES = [
+  { nivel: 3, etiqueta: "Lo puede enseñar", icono: "🟢" },
+  { nivel: 2, etiqueta: "Lo entiende", icono: "🟡" },
+  { nivel: 1, etiqueta: "Lo reconoce", icono: "🟠" },
+  { nivel: 0, etiqueta: "No lo conoce", icono: "⚫" },
+];
+
 function PantallaFin({
   usuario,
   conocidos,
@@ -172,22 +216,25 @@ function PantallaFin({
   setError,
   modoReeval,
 }) {
+  const conteos = { 0: 0, 1: 0, 2: 0, 3: 0 };
+  for (const nivel of Object.values(respuestas)) {
+    if (nivel in conteos) conteos[nivel] += 1;
+  }
+  const totalEvaluado = Object.values(respuestas).length;
+
   async function finalizar() {
     setError("");
     setGuardando(true);
     try {
       let modelos;
       if (modoReeval) {
-        // Solo upsert de conceptos efectivamente evaluados
+        // Solo actualizamos los conceptos efectivamente evaluados
         modelos = Object.entries(respuestas).map(([concepto, nivel]) => ({
           concepto,
           nivel,
         }));
       } else {
         // Onboarding inicial: escribir los 33 conceptos
-        // - Conocidos respondidos → nivel resultado
-        // - Conocidos no respondidos (sin pregunta válida) → 0
-        // - No conocidos → 0
         const conocidosSet = new Set(conocidos);
         modelos = todosLosConceptos().map((c) => {
           if (!conocidosSet.has(c)) return { concepto: c, nivel: 0 };
@@ -211,13 +258,39 @@ function PantallaFin({
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 max-w-md w-full text-center">
         <h2 className="text-2xl font-bold text-slate-800 mb-2">
-          {modoReeval ? "Re-evaluación completa" : "¡Terminaste el quiz!"}
+          {modoReeval ? "Re-evaluación completa" : "¡Terminaste el quiz! 🎉"}
         </h2>
         <p className="text-slate-600 mb-6 text-sm">
           {modoReeval
             ? "Guarda los cambios para actualizar tu perfil."
             : "Guarda tu perfil para ver tu skill tree y buscar matches."}
         </p>
+
+        {totalEvaluado > 0 && (
+          <div className="text-left bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 space-y-2">
+            {RESUMEN_NIVELES.map(({ nivel, etiqueta, icono }) => (
+              <div
+                key={nivel}
+                className="flex items-center justify-between text-sm"
+              >
+                <span className="flex items-center gap-2 text-slate-700">
+                  <span>{icono}</span>
+                  {etiqueta}
+                </span>
+                <span className="font-semibold text-slate-800">
+                  {conteos[nivel]}
+                </span>
+              </div>
+            ))}
+            <div className="border-t border-slate-200 pt-2 mt-2 flex items-center justify-between text-xs text-slate-500">
+              <span>Conceptos evaluados</span>
+              <span className="font-semibold text-slate-700">
+                {totalEvaluado}
+              </span>
+            </div>
+          </div>
+        )}
+
         {error && (
           <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-2 mb-4">
             {error}
