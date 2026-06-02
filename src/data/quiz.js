@@ -93,6 +93,10 @@ export const DOMAIN = {
 // p2: pregunta de profundidad (binaria), solo si eligió nivel 3.
 //   - correcto: true  → nivel 3 final (lo puede enseñar)
 //   - correcto: false → nivel 2 final (correcto pero superficial)
+//
+// NOTA: las opciones de cada pregunta se redactan con longitud
+// similar para que la correcta no se delate por ser la más larga,
+// y se barajan en tiempo de ejecución para evitar sesgo de posición.
 // ─────────────────────────────────────────────────────────────
 
 export const QUIZ = {
@@ -105,24 +109,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Se llenó la memoria temporal donde el sistema guarda los datos de los procesos activos; al agotarse, recurre al disco, que es mucho más lento.",
+            "La memoria temporal de los procesos activos se llenó y el sistema recurre al disco, que es mucho más lento.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Se llenó la memoria de trabajo de la computadora.",
+          texto:
+            "La memoria de trabajo donde la computadora maneja los programas abiertos se quedó sin espacio libre.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "El procesador se saturó porque tiene que ejecutar las instrucciones de demasiados programas.",
+            "El procesador se saturó porque tiene que ejecutar al mismo tiempo las instrucciones de demasiados programas.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "El router no puede manejar tantas conexiones de red al mismo tiempo.",
+            "El router no logra gestionar tantas conexiones de red abiertas a la vez y eso termina frenando el equipo.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -135,13 +140,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Mueve datos a un espacio del disco (memoria de intercambio/swap), lo que aumenta mucho el tiempo de acceso.",
+            "Mueve parte de los datos a un espacio reservado del disco (swap), lo que vuelve el acceso mucho más lento.",
           correcto: true,
         },
         {
           id: "b",
           texto:
-            "Borra automáticamente los programas que menos se usan para liberar espacio.",
+            "Borra de forma automática los programas que llevan más tiempo sin usarse para liberar memoria.",
           correcto: false,
         },
       ],
@@ -151,29 +156,30 @@ export const QUIZ = {
   CPU: {
     p1: {
       pregunta:
-        "Un programa tarda 10 segundos en tu computadora y solo 2 segundos en la de tu amigo, con la misma app. ¿Qué componente explica mejor la diferencia?",
+        "Un programa tarda 10 segundos en tu computadora y solo 2 en la de tu amigo, con la misma app. ¿Qué componente explica mejor la diferencia?",
       opciones: [
         {
           id: "a",
           texto:
-            "El componente que ejecuta las instrucciones del programa: con mayor frecuencia o más núcleos procesa más operaciones por segundo.",
+            "El componente que ejecuta las instrucciones: con más frecuencia o más núcleos procesa más operaciones por segundo.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "El procesador, porque es el que corre los programas.",
+          texto:
+            "El procesador, porque es la parte de la computadora encargada de correr y resolver los programas.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "La memoria de trabajo: si tu amigo tiene más, el programa se abre más rápido.",
+            "La memoria de trabajo, ya que si tu amigo tiene más cantidad el programa logra abrirse mucho más rápido.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Un mejor servidor DNS, porque eso hace que el programa cargue más rápido.",
+            "El servidor DNS que usa tu amigo es mejor y por eso consigue que el programa cargue en menos tiempo.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -185,13 +191,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Ejecutar varias instrucciones o hilos en paralelo, realmente al mismo tiempo.",
+            "Ejecutar varias instrucciones o hilos en paralelo, es decir realmente al mismo tiempo y no por turnos.",
           correcto: true,
         },
         {
           id: "b",
           texto:
-            "Que cada instrucción individual se ejecute automáticamente más rápido.",
+            "Que cada instrucción individual del programa se ejecute por sí sola de forma automáticamente más rápida.",
           correcto: false,
         },
       ],
@@ -206,24 +212,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Cada uno es una instancia de un programa en ejecución, con su propio espacio de memoria y tiempo de CPU asignado por el sistema.",
+            "Cada uno es una instancia de un programa en ejecución, con su propio espacio de memoria y tiempo de CPU.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Cada uno es un programa que está corriendo.",
+          texto:
+            "Cada uno es un programa que está corriendo en este momento dentro de la computadora del usuario.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "Cada uno ocupa de forma permanente un núcleo del procesador mientras está abierto.",
+            "Cada uno ocupa de forma permanente un núcleo completo del procesador todo el tiempo que está abierto.",
           nivel: 1,
         },
         {
           id: "d",
           texto:
-            "Cada uno es un paquete de datos que viaja por la red hacia el servidor.",
+            "Cada uno es un paquete de datos que viaja por la red hasta llegar al servidor que lo está solicitando.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -235,12 +242,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El programa es el archivo guardado en disco; el proceso es ese programa cargado en memoria y en ejecución.",
+            "El programa es el archivo guardado en disco; el proceso es ese programa ya cargado en memoria y ejecutándose.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Son lo mismo: proceso es solo otra palabra para programa.",
+          texto:
+            "No hay diferencia real: proceso es simplemente otra forma de nombrar a cualquier programa de la computadora.",
           correcto: false,
         },
       ],
@@ -255,23 +263,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El sistema alterna el uso del CPU entre procesos tan rápido que parece simultáneo, dándole a cada uno pequeñas fracciones de tiempo.",
+            "El sistema alterna el CPU entre procesos tan rápido que parece simultáneo, dando fracciones de tiempo a cada uno.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Una función que permite ejecutar varios programas a la vez.",
+          texto:
+            "Una función del sistema que le permite tener varios programas ejecutándose al mismo tiempo sin cerrarse.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "Una función que permite que varias personas usen la computadora al mismo tiempo.",
+            "Una función que permite que varias personas distintas usen la misma computadora exactamente al mismo tiempo.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Una red local (LAN) que conecta varios dispositivos a la vez.",
+          texto:
+            "Una red local que conecta varios dispositivos entre sí para que puedan trabajar juntos de forma coordinada.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -284,13 +294,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El sistema alterna rapidísimo entre procesos; en cada instante solo corre uno, pero el cambio es imperceptible.",
+            "Alterna rapidísimo entre procesos; en cada instante corre solo uno, pero el cambio es imperceptible para ti.",
           correcto: true,
         },
         {
           id: "b",
           texto:
-            "Un solo núcleo ejecuta de verdad todos los procesos exactamente al mismo tiempo.",
+            "Un único núcleo logra ejecutar de verdad todos los procesos abiertos exactamente en el mismo instante.",
           correcto: false,
         },
       ],
@@ -300,28 +310,30 @@ export const QUIZ = {
   Multiusuario: {
     p1: {
       pregunta:
-        "En una universidad, 30 alumnos se conectan al mismo servidor Linux con sus propias cuentas y trabajan de forma independiente. ¿Qué característica del SO lo permite?",
+        "En una universidad, 30 alumnos se conectan al mismo servidor Linux con sus cuentas y trabajan de forma independiente. ¿Qué característica del SO lo permite?",
       opciones: [
         {
           id: "a",
           texto:
-            "El sistema gestiona sesiones, permisos y recursos separados para cada usuario conectado simultáneamente al mismo equipo.",
+            "El sistema gestiona sesiones, permisos y recursos separados para cada usuario conectado al mismo tiempo.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Una función que permite que varios usuarios usen el sistema a la vez.",
+          texto:
+            "Una función que permite que varios usuarios distintos usen el mismo sistema a la vez sin estorbarse.",
           nivel: 2,
         },
         {
           id: "c",
           texto:
-            "Una función que permite correr varios procesos al mismo tiempo en el servidor.",
+            "Una función que permite correr varios procesos al mismo tiempo dentro del servidor para repartir el trabajo.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Un switch que conecta a todas las computadoras de la red.",
+          texto:
+            "Un switch que conecta a todas las computadoras de la red para que lleguen juntas hasta el mismo servidor.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -339,7 +351,7 @@ export const QUIZ = {
         {
           id: "b",
           texto:
-            "Que todos los usuarios compartan los mismos archivos y configuración para colaborar.",
+            "Que todos los usuarios compartan los mismos archivos y la misma configuración para poder colaborar mejor.",
           correcto: false,
         },
       ],
@@ -354,18 +366,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "ls en Linux (o dir en Windows): lista archivos y carpetas del directorio actual; con ls -la también muestra permisos, tamaño y archivos ocultos.",
+            "ls en Linux (o dir en Windows): lista los archivos y carpetas del directorio actual donde estás situado.",
           nivel: 3,
         },
-        { id: "b", texto: "ls en Linux o dir en Windows, para listar archivos.", nivel: 2 },
+        {
+          id: "b",
+          texto:
+            "El comando ls en Linux, o dir en Windows, que sirve para listar los archivos que hay en la carpeta.",
+          nivel: 2,
+        },
         {
           id: "c",
-          texto: "cd, para ver en qué directorio estás y qué contiene.",
+          texto:
+            "El comando cd, que sirve para ver en qué directorio te encuentras y también todo lo que contiene dentro.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "SELECT, para consultar los archivos de la carpeta.",
+          texto:
+            "La instrucción SELECT, que se usa para consultar y traer los archivos guardados dentro de la carpeta.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -376,12 +395,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "Los archivos ocultos (los que empiezan con un punto).",
+          texto:
+            "Los archivos ocultos, es decir aquellos cuyo nombre empieza con un punto y normalmente no se listan.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Los archivos ordenados alfabéticamente.",
+          texto:
+            "Los archivos ordenados alfabéticamente de la A a la Z para que sea más fácil encontrar lo que buscas.",
           correcto: false,
         },
       ],
@@ -396,18 +417,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "cd Documentos/Tareas — cambia el directorio de trabajo actual; la ruta puede ser relativa (desde donde estás) o absoluta (desde la raíz).",
+            "cd Documentos/Tareas — cambia el directorio actual; la ruta puede ser relativa o absoluta desde la raíz.",
           nivel: 3,
         },
-        { id: "b", texto: "cd Documentos/Tareas, para cambiar de carpeta.", nivel: 2 },
+        {
+          id: "b",
+          texto:
+            "Escribo cd Documentos/Tareas, que es el comando que sirve para cambiarme de una carpeta a otra distinta.",
+          nivel: 2,
+        },
         {
           id: "c",
-          texto: "ls Documentos/Tareas, para entrar y ver el contenido.",
+          texto:
+            "Escribo ls Documentos/Tareas, que me permite entrar a esa carpeta y a la vez ver el contenido que tiene.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "ping Documentos/Tareas, para llegar a la carpeta.",
+          texto:
+            "Escribo ping Documentos/Tareas, que envía una señal hasta la carpeta para poder llegar hasta ella.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -419,12 +447,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "`cd ..` sube un nivel al directorio padre; `cd /` va directo a la raíz del sistema de archivos.",
+            "`cd ..` sube un nivel hacia el directorio padre; `cd /` te lleva directo a la raíz del sistema de archivos.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Ambos regresan al directorio personal del usuario (home).",
+          texto:
+            "Ambos comandos hacen lo mismo: te regresan al directorio personal (home) del usuario que inició sesión.",
           correcto: false,
         },
       ],
@@ -439,14 +468,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "mkdir proyecto — crea el directorio; si ya existe da error, y con mkdir -p puedes crear directorios anidados sin error.",
+            "mkdir proyecto crea el directorio; si ya existe da error, y con mkdir -p se crean carpetas anidadas.",
           nivel: 3,
         },
-        { id: "b", texto: "mkdir proyecto, para crear una nueva carpeta.", nivel: 2 },
-        { id: "c", texto: "cd proyecto, para crear y entrar a la carpeta.", nivel: 1 },
+        {
+          id: "b",
+          texto:
+            "Uso el comando mkdir proyecto, que es el que sirve para crear una carpeta nueva donde me encuentro.",
+          nivel: 2,
+        },
+        {
+          id: "c",
+          texto:
+            "Uso el comando cd proyecto, que crea la carpeta y al mismo tiempo me mete dentro de ella para trabajar.",
+          nivel: 1,
+        },
         {
           id: "d",
-          texto: "DNS proyecto, para registrar el nombre de la carpeta.",
+          texto:
+            "Uso la instrucción DNS proyecto, que registra el nombre de la carpeta para que el sistema la reconozca.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -458,12 +498,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Crea toda la cadena anidada a, b y c, aunque los directorios intermedios no existan.",
+            "Crea toda la cadena anidada a, b y c de una vez, aunque los directorios intermedios todavía no existan.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Crea solo la última carpeta c y falla si a o b no existen.",
+          texto:
+            "Crea únicamente la última carpeta c y marca error si las carpetas a o b no han sido creadas antes.",
           correcto: false,
         },
       ],
@@ -478,22 +519,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "ping google.com — envía paquetes al destino y mide el tiempo de respuesta (latencia en ms); si hay respuesta, la conexión funciona.",
+            "ping google.com envía paquetes al destino y mide el tiempo de respuesta; si responde, hay conexión.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "ping google.com, para verificar si hay conexión con ese host.",
+          texto:
+            "Uso ping google.com, que sirve para verificar si existe conexión entre mi equipo y ese host concreto.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "mkdir google.com, para crear la conexión con el host.",
+          texto:
+            "Uso mkdir google.com, que se encarga de crear y dejar establecida la conexión con el host que indico.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "SELECT google.com, para consultar el estado del servidor.",
+          texto:
+            "Uso SELECT google.com, que consulta directamente el estado en el que se encuentra el servidor remoto.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -505,12 +549,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Que puede haber un problema de conexión, el host caído o el ICMP bloqueado por un firewall; no necesariamente que el sitio esté caído para todos.",
+            "Puede haber un problema de red, el host caído o un firewall bloqueando ICMP; no que el sitio esté caído.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Que tu internet está siempre completamente desconectado.",
+          texto:
+            "Significa siempre, sin excepción, que tu conexión a internet está completamente caída y desconectada.",
           correcto: false,
         },
       ],
@@ -526,18 +571,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Una red de área local: cubre un espacio pequeño como una casa u oficina y permite compartir recursos (impresoras, archivos) entre dispositivos cercanos.",
+            "Una red de área local: cubre un espacio pequeño y permite compartir recursos entre dispositivos cercanos.",
           nivel: 3,
         },
-        { id: "b", texto: "Una LAN, una red local para dispositivos cercanos.", nivel: 2 },
+        {
+          id: "b",
+          texto:
+            "Una LAN, que es básicamente una red local pensada para conectar dispositivos que están físicamente cerca.",
+          nivel: 2,
+        },
         {
           id: "c",
-          texto: "Una WAN, porque están conectados a internet, que es global.",
+          texto:
+            "Una WAN, ya que al estar todos conectados a internet forman parte de una red de alcance global y amplio.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Un proceso, porque el sistema operativo administra los dispositivos.",
+          texto:
+            "Un proceso, porque es el sistema operativo el que se encarga de administrar todos esos dispositivos juntos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -549,12 +601,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "No: los dispositivos de una LAN pueden compartir archivos e impresoras entre sí sin ninguna conexión a internet.",
+            "No: los dispositivos de una LAN pueden compartir archivos e impresoras entre sí sin conexión a internet.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Sí: sin internet, una LAN no puede conectar sus dispositivos.",
+          texto:
+            "Sí: sin una conexión a internet activa, una LAN no es capaz de comunicar ni de conectar sus dispositivos.",
           correcto: false,
         },
       ],
@@ -569,18 +622,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Una red de área amplia: conecta redes separadas geográficamente, normalmente usando infraestructura de terceros como fibra o satélite.",
+            "Una red de área amplia: une redes separadas geográficamente usando infraestructura de terceros como fibra.",
           nivel: 3,
         },
-        { id: "b", texto: "Una WAN, porque conecta ubicaciones en distintas ciudades.", nivel: 2 },
+        {
+          id: "b",
+          texto:
+            "Una WAN, porque se encarga de conectar entre sí ubicaciones que están en ciudades diferentes y lejanas.",
+          nivel: 2,
+        },
         {
           id: "c",
-          texto: "Una LAN extendida, porque sigue siendo la red interna de la misma empresa.",
+          texto:
+            "Una LAN extendida, ya que en el fondo sigue siendo la misma red interna y privada de una sola empresa.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Una multitarea, porque maneja varias conexiones al mismo tiempo.",
+          texto:
+            "Una multitarea, porque es lo que permite manejar varias de esas conexiones al mismo tiempo sin saturarse.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -592,12 +652,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "A menudo de proveedores de telecomunicaciones (enlaces contratados), no de la propia empresa.",
+            "A menudo de proveedores de telecomunicaciones que rentan los enlaces, no de la propia empresa que la usa.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Siempre de la empresa que la usa, igual que una LAN.",
+          texto:
+            "Siempre es propiedad de la empresa que la utiliza, exactamente igual que ocurre con cualquier red LAN.",
           correcto: false,
         },
       ],
@@ -611,22 +672,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Internet es una red de redes pública y global que interconecta millones de redes usando TCP/IP; una WAN puede ser privada, e Internet es la WAN más grande del mundo.",
+            "Internet es una red de redes pública y global con TCP/IP; una WAN puede ser privada y es solo una parte.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Internet es la red global que conecta computadoras de todo el mundo.",
+          texto:
+            "Internet es la gran red global que se encarga de conectar entre sí a las computadoras de todo el mundo.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Son lo mismo: Internet es simplemente una WAN muy grande.",
+          texto:
+            "Son exactamente lo mismo: Internet no es más que una red WAN que resulta ser muy grande y muy extensa.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Internet es un programa que se ejecuta dentro del navegador.",
+          texto:
+            "Internet es en realidad un programa que se ejecuta dentro del navegador para poder mostrar las páginas.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -638,12 +702,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El conjunto de protocolos estandarizados TCP/IP, que permite que redes heterogéneas se entiendan entre sí.",
+            "El conjunto de protocolos estándar TCP/IP, que permite que redes muy distintas se entiendan entre sí.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "El lenguaje HTML, que todos los dispositivos usan para comunicarse.",
+          texto:
+            "El lenguaje HTML, que es el que todos los dispositivos del mundo usan para poder comunicarse en la red.",
           correcto: false,
         },
       ],
@@ -658,18 +723,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El router: opera en la capa de red y usa tablas de enrutamiento para elegir el camino de cada paquete entre redes distintas según la IP destino.",
+            "El router: opera en la capa de red y usa tablas de enrutamiento para elegir el camino según la IP destino.",
           nivel: 3,
         },
-        { id: "b", texto: "El router, que conecta tu red local con internet.", nivel: 2 },
+        {
+          id: "b",
+          texto:
+            "El router, que es justamente el dispositivo encargado de conectar tu red local de la casa con internet.",
+          nivel: 2,
+        },
         {
           id: "c",
-          texto: "El switch, que distribuye la señal entre todos los dispositivos de la red.",
+          texto:
+            "El switch, que se encarga de distribuir la señal entre todos los dispositivos que hay dentro de la red.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "El CPU, que procesa hacia dónde van los datos.",
+          texto:
+            "El CPU, que es el componente que procesa y decide internamente hacia qué lugar tienen que ir los datos.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -680,12 +752,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "En la capa de red (capa 3), usando direcciones IP.",
+          texto:
+            "En la capa de red, también llamada capa 3, donde toma decisiones usando las direcciones IP de destino.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "En la capa física, porque transmite la señal eléctrica.",
+          texto:
+            "En la capa física, ya que su función principal es transmitir directamente la señal eléctrica por el cable.",
           correcto: false,
         },
       ],
@@ -700,18 +774,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Un switch: conecta dispositivos dentro de una LAN y envía los datos solo al destino usando direcciones MAC, a diferencia de un hub que los manda a todos.",
+            "Un switch: conecta equipos de una LAN y envía los datos solo al destino usando las direcciones MAC.",
           nivel: 3,
         },
-        { id: "b", texto: "Un switch, para conectar varios dispositivos en la misma red.", nivel: 2 },
+        {
+          id: "b",
+          texto:
+            "Un switch, que es el dispositivo pensado para conectar entre sí varios equipos dentro de una misma red.",
+          nivel: 2,
+        },
         {
           id: "c",
-          texto: "Un router, para que todos los dispositivos puedan comunicarse entre sí.",
+          texto:
+            "Un router, ya que es el aparato necesario para que todos los dispositivos puedan comunicarse entre ellos.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Un algoritmo, que organiza las conexiones entre las computadoras.",
+          texto:
+            "Un algoritmo, que se encarga de organizar y de ordenar las conexiones entre todas las computadoras.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -723,12 +804,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Aprende y usa una tabla de direcciones MAC para enviarla solo al puerto correcto.",
+            "Aprende y consulta una tabla de direcciones MAC para enviarla únicamente al puerto que le corresponde.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "La difunde a todos los puertos cada vez, igual que un hub.",
+          texto:
+            "La difunde de golpe a todos los puertos cada vez, funcionando exactamente igual que lo haría un hub.",
           correcto: false,
         },
       ],
@@ -743,22 +825,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Recibe la solicitud del navegador (cliente), busca el recurso pedido y envía la respuesta; es una máquina o programa que provee servicios a otros dispositivos.",
+            "Recibe la solicitud del navegador, busca el recurso pedido y lo devuelve; provee servicios a otros equipos.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Almacena la página web y la envía cuando alguien la pide.",
+          texto:
+            "El servidor es el que almacena la página web y se encarga de enviarla cada vez que alguien la solicita.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Es el router que dirige la petición hacia la página correcta.",
+          texto:
+            "El servidor es el router que se ocupa de dirigir la petición hasta la página correcta que se le pidió.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Es una variable que guarda la página dentro del programa.",
+          texto:
+            "El servidor es una variable que guarda la página completa dentro del programa para mostrarla después.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -769,12 +854,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "El cliente envía la solicitud; el servidor espera y responde.",
+          texto:
+            "El cliente es quien envía la solicitud, y el servidor se mantiene a la espera para poder responderla.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "El servidor inicia enviando páginas a los clientes periódicamente.",
+          texto:
+            "El servidor inicia la comunicación enviando las páginas a los clientes cada cierto tiempo de forma activa.",
           correcto: false,
         },
       ],
@@ -789,23 +876,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El módem convierte la señal de tu red a la que viaja por el cable del proveedor (y viceversa); el router solo distribuye la conexión ya convertida dentro de tu casa.",
+            "El módem convierte la señal de tu red a la del cable del proveedor; el router solo la distribuye en casa.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "El módem conecta tu casa a internet y el router distribuye esa conexión entre tus dispositivos.",
+            "El módem es lo que conecta tu casa con internet, y el router reparte esa conexión entre tus dispositivos.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "No necesitas los dos: el módem y el router hacen lo mismo.",
+          texto:
+            "En realidad no necesitas los dos, porque el módem y el router terminan haciendo exactamente la misma tarea.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "El módem es un proceso que el sistema operativo ejecuta para conectarse.",
+          texto:
+            "El módem es un proceso que el sistema operativo ejecuta cada vez que la computadora quiere conectarse.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -817,12 +906,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Modula y demodula señales para adaptarlas entre medios (por ejemplo, de digital a la línea de transmisión del proveedor).",
+            "Modula y demodula señales para adaptarlas entre medios, por ejemplo de digital a la línea del proveedor.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Asigna direcciones IP a los dispositivos de la casa.",
+          texto:
+            "Asigna las direcciones IP a cada uno de los dispositivos que están conectados dentro de la red de la casa.",
           correcto: false,
         },
       ],
@@ -837,23 +927,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Transmite los bits crudos por el medio: maneja voltaje, frecuencia y temporización. Ejemplos: cables Ethernet, fibra óptica, señal WiFi, conectores RJ45.",
+            "Transmite los bits crudos por el medio y maneja el voltaje y la temporización; ejemplos: cables, fibra, WiFi.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "Es la capa más baja del OSI y maneja la transmisión de bits por el medio físico, como cables o señales inalámbricas.",
+            "Es la capa más baja del modelo OSI y se encarga de transmitir los bits por el medio, sea cable o señal.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Es la capa que asigna direcciones IP y enruta los paquetes entre redes.",
+          texto:
+            "Es la capa que se ocupa de asignar las direcciones IP y de enrutar los paquetes entre redes distintas.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Es la capa donde el CPU ejecuta las instrucciones del programa.",
+          texto:
+            "Es la capa donde el CPU se encarga de ejecutar una por una las instrucciones que componen el programa.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -864,12 +956,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "El conector RJ45 o el cable de fibra óptica que lleva la señal.",
+          texto:
+            "El conector RJ45 o el cable de fibra óptica, que son el medio por donde viaja físicamente la señal.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "La dirección IP que identifica al dispositivo.",
+          texto:
+            "La dirección IP, que es el número que se usa para identificar a cada dispositivo dentro de la red.",
           correcto: false,
         },
       ],
@@ -883,23 +977,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Garantiza la transferencia confiable entre dos nodos conectados directamente, detectando errores de la capa física y usando direcciones MAC dentro de la misma red local.",
+            "Transfiere datos de forma confiable entre dos nodos conectados, detecta errores y usa direcciones MAC.",
           nivel: 3,
         },
         {
           id: "b",
           texto:
-            "Maneja la comunicación entre dispositivos de la misma red usando direcciones MAC.",
+            "Se encarga de manejar la comunicación entre los dispositivos de una misma red usando las direcciones MAC.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Establece y cierra las conexiones entre dispositivos para que se comuniquen.",
+          texto:
+            "Se encarga de establecer y de cerrar las conexiones entre los dispositivos para que puedan comunicarse.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Guarda los datos en una variable para poder enviarlos.",
+          texto:
+            "Se encarga de guardar todos los datos dentro de una variable para que después se puedan enviar por la red.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -910,12 +1006,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "Direcciones MAC (físicas), únicas por cada interfaz de red.",
+          texto:
+            "Direcciones MAC, también llamadas físicas, que son únicas para cada interfaz o tarjeta de red existente.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Direcciones IP, para enrutar entre redes distintas.",
+          texto:
+            "Direcciones IP, que son las que se utilizan para poder enrutar la información entre redes diferentes.",
           correcto: false,
         },
       ],
@@ -930,22 +1028,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "La capa de red: enruta los paquetes entre redes distintas usando direcciones IP; los routers operan aquí eligiendo el camino más eficiente.",
+            "La capa de red: enruta los paquetes entre redes usando direcciones IP, y es donde operan los routers.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "La capa de red, que usa direcciones IP para enrutar los paquetes entre redes.",
+          texto:
+            "La capa de red, que es la que se vale de las direcciones IP para enrutar los paquetes entre las redes.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "La capa de transporte, que controla el flujo de datos de extremo a extremo.",
+          texto:
+            "La capa de transporte, que es la encargada de controlar el flujo de los datos de un extremo al otro.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "La multitarea, que va alternando el envío de los datos.",
+          texto:
+            "La multitarea, que es justo lo que va alternando el envío de los datos para que todos puedan avanzar.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -956,12 +1057,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "El router, que elige rutas según la dirección IP.",
+          texto:
+            "El router, que es el que elige las rutas de los paquetes basándose en la dirección IP de su destino.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "El switch, que trabaja sobre todo con MAC en la capa de enlace.",
+          texto:
+            "El switch, que en realidad trabaja sobre todo con direcciones MAC dentro de la capa de enlace de datos.",
           correcto: false,
         },
       ],
@@ -975,22 +1078,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Ambos son de la capa de transporte: TCP garantiza entrega ordenada y sin errores (web, email); UDP es más rápido pero sin garantías (videollamadas, juegos).",
+            "Son de la capa de transporte: TCP garantiza entrega ordenada y sin errores; UDP es más rápido sin garantías.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "TCP garantiza que los datos lleguen bien y UDP es más rápido pero sin garantías.",
+          texto:
+            "TCP se asegura de que los datos lleguen bien, mientras que UDP es más rápido pero no ofrece garantías.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "TCP y UDP son protocolos de la capa de red que enrutan los paquetes.",
+          texto:
+            "TCP y UDP son protocolos de la capa de red que se encargan de enrutar los paquetes entre redes distintas.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "TCP y UDP son variables de programación que guardan datos.",
+          texto:
+            "TCP y UDP son variables de programación que se utilizan para guardar datos mientras corre el programa.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1002,12 +1108,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Por su baja latencia: retransmitir un paquete que llegó tarde sería inútil, así que prioriza velocidad sobre entrega perfecta.",
+            "Por su baja latencia: retransmitir un paquete que llegó tarde sería inútil, así que prioriza la velocidad.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Porque UDP garantiza que cada cuadro llegue en orden perfecto.",
+          texto:
+            "Porque UDP es el que garantiza que absolutamente cada cuadro de la videollamada llegue en perfecto orden.",
           correcto: false,
         },
       ],
@@ -1017,27 +1124,30 @@ export const QUIZ = {
   "Sesión": {
     p1: {
       pregunta:
-        "Cuando haces una videollamada de Zoom de 1 hora, ¿qué capa del OSI gestiona que esa conexión se mantenga abierta toda la llamada?",
+        "Cuando haces una videollamada de Zoom de 1 hora, ¿qué capa del OSI mantiene esa conexión abierta toda la llamada?",
       opciones: [
         {
           id: "a",
           texto:
-            "La capa de sesión: establece, mantiene y termina sesiones entre aplicaciones, sincronizando el diálogo para que la conexión no se pierda en intercambios largos.",
+            "La capa de sesión: abre, mantiene y cierra la sesión entre aplicaciones, sincronizando el diálogo largo.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "La capa de sesión, que abre y cierra las conexiones entre aplicaciones.",
+          texto:
+            "La capa de sesión, que es la que se encarga de abrir y de cerrar las conexiones entre las aplicaciones.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "La capa de transporte, porque TCP mantiene la conexión activa durante la llamada.",
+          texto:
+            "La capa de transporte, ya que es TCP el que mantiene la conexión activa durante toda la videollamada.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "La memoria RAM, que va guardando los datos de la llamada.",
+          texto:
+            "La memoria RAM, que es la que se va encargando de ir guardando los datos generados durante la llamada.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1049,12 +1159,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Gestionar el diálogo entre dos aplicaciones: abrir, sincronizar, marcar puntos de control y cerrar la sesión.",
+            "Gestionar el diálogo entre dos aplicaciones: abrirlo, sincronizarlo, marcar puntos de control y cerrarlo.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Cifrar los datos antes de transmitirlos.",
+          texto:
+            "Cifrar los datos antes de transmitirlos para que nadie pueda leerlos mientras viajan a través de la red.",
           correcto: false,
         },
       ],
@@ -1064,27 +1175,30 @@ export const QUIZ = {
   "Presentación": {
     p1: {
       pregunta:
-        "Cuando tu navegador recibe una página cifrada con HTTPS y la muestra bien, ¿qué capa del OSI participa en el descifrado y el formato de los datos?",
+        "Cuando tu navegador recibe una página cifrada con HTTPS y la muestra bien, ¿qué capa del OSI participa en el descifrado y el formato?",
       opciones: [
         {
           id: "a",
           texto:
-            "La capa de presentación: traduce los datos entre el formato de la red y el de la aplicación; se encarga del cifrado/descifrado, la compresión y la conversión de formatos.",
+            "La de presentación: traduce datos entre la red y la app, y hace el cifrado, la compresión y los formatos.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "La capa de presentación, que formatea y cifra los datos para que la app los entienda.",
+          texto:
+            "La capa de presentación, que se encarga de dar formato y de cifrar los datos para que la app los entienda.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "La capa de aplicación, porque es la que interactúa directamente con el navegador.",
+          texto:
+            "La capa de aplicación, ya que es justamente la que interactúa de forma directa con el navegador del usuario.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "El compilador, que traduce el código del programa.",
+          texto:
+            "El compilador, que es el encargado de traducir el código del programa para que la máquina lo pueda ejecutar.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1096,12 +1210,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El cifrado/descifrado y la conversión de formato de los datos (por ejemplo, la codificación de caracteres).",
+            "El cifrado y el descifrado junto con la conversión del formato de los datos, como la codificación de caracteres.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Elegir la ruta que toman los paquetes a través de las redes.",
+          texto:
+            "Elegir la ruta que van a tomar los paquetes a medida que atraviesan las distintas redes hasta su destino.",
           correcto: false,
         },
       ],
@@ -1116,22 +1231,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Porque son la interfaz directa entre el software del usuario y la red; la capa de aplicación no es la app en sí, sino los protocolos que definen cómo se comunican las aplicaciones.",
+            "Son la interfaz directa entre el software y la red: definen cómo se comunican las aplicaciones, no son la app.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Porque son los protocolos que usan directamente las aplicaciones para comunicarse.",
+          texto:
+            "Porque son justamente los protocolos que las aplicaciones utilizan de forma directa para poder comunicarse.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Porque se encargan de establecer la sesión de comunicación entre cliente y servidor.",
+          texto:
+            "Porque se encargan de establecer la sesión de comunicación que hay entre el cliente y el servidor remoto.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Porque son procesos que ejecuta el sistema operativo.",
+          texto:
+            "Porque en el fondo no son más que procesos que el sistema operativo se encarga de ejecutar cuando hacen falta.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1142,12 +1260,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "No: el navegador es la aplicación; la capa de aplicación son los protocolos (como HTTP) que usa.",
+          texto:
+            "No: el navegador es la aplicación; la capa de aplicación son los protocolos, como HTTP, que ese navegador usa.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Sí: el navegador es literalmente la capa de aplicación del OSI.",
+          texto:
+            "Sí: el navegador es, de forma literal, lo que constituye la capa de aplicación dentro del modelo OSI.",
           correcto: false,
         },
       ],
@@ -1161,22 +1281,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "HTTPS cifra la comunicación con TLS/SSL, así que aunque alguien intercepte los datos no puede leerlos; HTTP los transmite en texto plano y cualquiera en la misma red vería tu contraseña.",
+            "HTTPS cifra la comunicación con TLS/SSL, así nadie puede leer los datos; HTTP los manda en texto plano.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "HTTPS es la versión segura de HTTP porque cifra los datos que se transmiten.",
+          texto:
+            "HTTPS es la versión segura de HTTP porque se encarga de cifrar todos los datos que se transmiten por la red.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "HTTPS traduce de forma segura el nombre del dominio a su dirección IP.",
+          texto:
+            "HTTPS es el que se ocupa de traducir de forma segura el nombre del dominio hasta llegar a su dirección IP.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "HTTPS es un CPU más rápido para el servidor del banco.",
+          texto:
+            "HTTPS es básicamente un CPU más rápido y potente que se instala en el servidor del banco para protegerlo.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1187,12 +1310,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "Una capa TLS/SSL que cifra y autentica la conexión.",
+          texto:
+            "Una capa TLS/SSL que se encarga de cifrar la conexión y además de autenticar al servidor con el que hablas.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Una conexión por cable directo al servidor que la hace más rápida.",
+          texto:
+            "Una conexión por cable directa hacia el servidor del banco, que es justamente lo que la vuelve más rápida.",
           correcto: false,
         },
       ],
@@ -1207,22 +1332,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Traduce el nombre de dominio a su dirección IP (por ejemplo 142.250.80.46); la computadora no puede conectarse con un nombre, necesita la IP. Es como el directorio telefónico de internet.",
+            "Traduce el nombre de dominio a su dirección IP; el equipo no se conecta usando un nombre, sino la IP.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Convierte el nombre del sitio en una dirección IP para que el navegador se conecte.",
+          texto:
+            "Convierte el nombre del sitio en una dirección IP para que el navegador sepa con quién debe conectarse.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Cifra la conexión con el sitio para que sea segura.",
+          texto:
+            "Se encarga de cifrar la conexión que tendrás con el sitio para que la comunicación viaje de forma segura.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Es la variable que guarda el sitio web dentro del programa.",
+          texto:
+            "Es la variable que guarda el sitio web dentro del programa para poder volver a mostrarlo más adelante.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1234,12 +1362,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El navegador no encuentra la IP, así que la página no carga aunque el servidor esté funcionando.",
+            "El navegador no encuentra la IP, así que la página no carga aunque el servidor esté funcionando bien.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "La página carga, pero sin imágenes.",
+          texto:
+            "La página de todos modos carga correctamente, solo que aparece sin ninguna de sus imágenes ni recursos.",
           correcto: false,
         },
       ],
@@ -1254,22 +1383,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Para que el router sepa a quién entregar cada paquete; si dos dispositivos tienen la misma IP se produce un conflicto y los paquetes llegan al destino equivocado.",
+            "Para que el router sepa a quién entregar cada paquete; con la misma IP habría conflicto y datos mal dirigidos.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Porque cada dispositivo necesita una IP distinta para identificarse en la red.",
+          texto:
+            "Porque cada dispositivo necesita tener una dirección IP distinta para poder identificarse dentro de la red.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Porque el DNS le da a cada dispositivo su nombre para que no choquen.",
+          texto:
+            "Porque es el DNS el que le pone a cada dispositivo su propio nombre para que de ese modo no choquen entre sí.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Porque cada dispositivo ejecuta un proceso distinto y por eso necesita otro número.",
+          texto:
+            "Porque cada dispositivo ejecuta un proceso diferente y por esa misma razón necesita también otro número.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1281,12 +1413,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Las IP privadas identifican dispositivos dentro de la red local; la IP pública identifica a toda la red frente a internet.",
+            "Las privadas identifican dispositivos dentro de la red local; la pública identifica a toda la red en internet.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Las IP públicas son para celulares y las privadas para computadoras.",
+          texto:
+            "Las direcciones IP públicas son para los celulares y las direcciones IP privadas son para las computadoras.",
           correcto: false,
         },
       ],
@@ -1302,22 +1435,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Sí, si cumple: pasos precisos y no ambiguos, en orden definido, número finito y que produce un resultado. Si dice 'sal al gusto' deja de serlo, porque 'al gusto' es ambiguo.",
+            "Sí, si tiene pasos precisos, ordenados y finitos que dan un resultado; 'sal al gusto' lo volvería ambiguo.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Sí, porque una receta tiene pasos ordenados para llegar a un resultado.",
+          texto:
+            "Sí, porque una receta de cocina tiene una serie de pasos ordenados para llegar a un resultado concreto.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "No, porque un algoritmo es solo una variable que almacena los pasos.",
+          texto:
+            "No, porque un algoritmo no es más que una variable que se encarga de almacenar dentro de sí todos los pasos.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "No, porque un algoritmo solo existe dentro del CPU como señales eléctricas.",
+          texto:
+            "No, porque un algoritmo solamente puede existir dentro del CPU en forma de señales eléctricas internas.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1328,12 +1464,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "Que sea finito y con pasos bien definidos y no ambiguos.",
+          texto:
+            "Que sea finito y que tenga pasos bien definidos y no ambiguos que lleven siempre a un resultado claro.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Que esté escrito en un lenguaje de programación para que cuente como algoritmo.",
+          texto:
+            "Que esté escrito en un lenguaje de programación, porque si no lo está entonces no se le considera algoritmo.",
           correcto: false,
         },
       ],
@@ -1348,22 +1486,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Es un espacio de memoria con nombre cuyo valor puede cambiar durante la ejecución; 'calificacion' guarda un valor distinto cada vez, mientras una constante como PI nunca cambia.",
+            "Es un espacio de memoria con nombre cuyo valor puede cambiar; una constante como PI nunca cambia su valor.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Guarda datos que pueden cambiar, a diferencia de una constante que siempre vale lo mismo.",
+          texto:
+            "Es algo que guarda datos que sí pueden cambiar, al revés de una constante que siempre vale exactamente lo mismo.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Es el conjunto ordenado de pasos para calcular el promedio.",
+          texto:
+            "Es el conjunto de pasos ordenados que el programa va siguiendo uno por uno para calcular ese promedio final.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Es el chip de memoria RAM donde se almacena todo.",
+          texto:
+            "Es el chip de memoria RAM que está dentro de la computadora y donde se termina almacenando absolutamente todo.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1374,12 +1515,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "El valor de una variable se puede reasignar durante la ejecución; el de una constante no.",
+          texto:
+            "Que el valor de una variable se puede reasignar mientras corre el programa, y el de una constante no cambia.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Una variable guarda números y una constante guarda texto.",
+          texto:
+            "Que una variable siempre guarda números mientras que una constante guarda únicamente texto o palabras.",
           correcto: false,
         },
       ],
@@ -1389,27 +1532,30 @@ export const QUIZ = {
   "Estructura de control": {
     p1: {
       pregunta:
-        "Un cajero verifica tu saldo antes de darte dinero y, si no hay suficiente, muestra un error. ¿Qué tipo de estructura de control describe eso?",
+        "Un cajero verifica tu saldo antes de darte dinero y, si no hay suficiente, muestra un error. ¿Qué tipo de estructura de control es?",
       opciones: [
         {
           id: "a",
           texto:
-            "Una estructura de selección (if/else): evalúa una condición (saldo >= monto) y ejecuta un bloque u otro; sin estructuras de control el programa correría en secuencia sin tomar decisiones.",
+            "Una selección (if/else): evalúa una condición y ejecuta un bloque u otro según si esa condición se cumple.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Una estructura de selección o condicional, que ejecuta código distinto según una condición.",
+          texto:
+            "Una estructura de selección o condicional, que ejecuta un código distinto dependiendo de una condición dada.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Una estructura de iteración, porque el cajero repite la verificación en cada operación.",
+          texto:
+            "Una estructura de iteración, porque el cajero repite esa misma verificación cada vez que haces una operación.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Un router que decide a dónde enviar el dinero.",
+          texto:
+            "Un router, que es el dispositivo que se encarga de decidir hacia qué lugar tiene que enviar el dinero.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1421,12 +1567,13 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "La selección decide si ejecutar un bloque una vez según una condición; la iteración repite un bloque mientras se cumpla una condición.",
+            "La selección decide si ejecutar un bloque una vez según la condición; la iteración lo repite mientras se cumpla.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "La selección ejecuta el código en orden y la iteración elige entre dos opciones.",
+          texto:
+            "La selección ejecuta el código en orden y la iteración es la que se encarga de elegir entre dos opciones.",
           correcto: false,
         },
       ],
@@ -1436,27 +1583,30 @@ export const QUIZ = {
   Compilado: {
     p1: {
       pregunta:
-        "Un programa en C se compila una vez y se distribuye como ejecutable (.exe). ¿Qué ventaja concreta tiene sobre un lenguaje interpretado?",
+        "Un programa en C se compila una vez y se distribuye como ejecutable (.exe). ¿Qué ventaja concreta tiene sobre uno interpretado?",
       opciones: [
         {
           id: "a",
           texto:
-            "El compilador traduce todo el código a lenguaje máquina antes de ejecutarse, así corre directo en el hardware: es más rápido y no necesita el compilador instalado para correr.",
+            "El compilador traduce todo a lenguaje máquina antes; así corre directo en el hardware y resulta más rápido.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Los lenguajes compilados son más rápidos porque el código se traduce a lenguaje máquina antes de ejecutarse.",
+          texto:
+            "Los lenguajes compilados son más rápidos porque el código se traduce a lenguaje máquina antes de ejecutarse.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Los lenguajes compilados ejecutan el código línea por línea en tiempo real.",
+          texto:
+            "Los lenguajes compilados van ejecutando el código línea por línea y en tiempo real mientras el programa corre.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Los lenguajes compilados necesitan un router para distribuir el .exe.",
+          texto:
+            "Los lenguajes compilados necesitan que haya un router disponible para poder distribuir el archivo .exe.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1467,12 +1617,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "No: ya es código máquina; el compilador solo se necesita para construirlo, no para ejecutarlo.",
+          texto:
+            "No: como ya es código máquina, el compilador solo hace falta para construirlo, pero no para ejecutarlo.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Sí: el compilador debe estar presente cada vez que el programa se ejecuta.",
+          texto:
+            "Sí: el compilador tiene que estar presente e instalado cada vez que el programa se vuelve a ejecutar.",
           correcto: false,
         },
       ],
@@ -1486,22 +1638,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "El intérprete lee y ejecuta cada línea en tiempo real, sin traducir todo antes; si hay un error en la línea 50, corre las 49 anteriores y falla ahí. Requiere el intérprete instalado.",
+            "El intérprete lee y ejecuta cada línea en el momento; si falla la 50, corre las 49 previas y se detiene ahí.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Ejecuta el código directamente sin compilarlo primero, línea por línea.",
+          texto:
+            "Que ejecuta el código directamente sin compilarlo primero, yendo línea por línea conforme va avanzando.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Se traduce por completo a lenguaje máquina antes de ejecutarse, por eso es lento.",
+          texto:
+            "Que el código se traduce por completo a lenguaje máquina antes de ejecutarse, y justo por eso resulta lento.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Se interpreta porque un servidor lo lee de forma remota.",
+          texto:
+            "Que se interpreta porque hay un servidor remoto que es el que se encarga de leerlo desde la distancia.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1512,12 +1667,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "Porque el código fuente se traduce y ejecuta en tiempo de ejecución; sin el intérprete no hay nada que lo ejecute.",
+          texto:
+            "Porque el código se traduce y se ejecuta en el momento; sin el intérprete no hay nada que pueda ejecutarlo.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Porque el intérprete guarda permanentemente las variables del programa.",
+          texto:
+            "Porque es el intérprete el que se encarga de guardar de forma permanente todas las variables del programa.",
           correcto: false,
         },
       ],
@@ -1531,22 +1688,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Un bucle for que suma los elementos de una lista: defines cada paso (inicializa contador, verifica condición, suma, incrementa) y controlas el flujo paso a paso.",
+            "Un bucle for que suma una lista: defines cada paso (inicia, verifica, suma, incrementa) y controlas el flujo.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Escribes instrucciones paso a paso que la computadora sigue en orden, como en C o Java.",
+          texto:
+            "Escribir instrucciones paso a paso que la computadora va siguiendo una por una en orden, como en C o en Java.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Describes qué resultado quieres sin decir cómo obtenerlo, como en SQL.",
+          texto:
+            "Describir solamente qué resultado quieres obtener sin tener que decir cómo conseguirlo, tal como pasa en SQL.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Significa que el programa se ejecuta en la capa física de la red.",
+          texto:
+            "Que el programa termine ejecutándose directamente dentro de la capa física de la red de computadoras.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1557,12 +1717,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "Especificas explícitamente la secuencia de pasos y los cambios de estado (el CÓMO).",
+          texto:
+            "Que especificas de forma explícita la secuencia de pasos y los cambios de estado, es decir el CÓMO se hace.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "Solo describes el resultado deseado y el sistema decide los pasos.",
+          texto:
+            "Que solo describes el resultado que deseas y es el sistema el que se encarga de decidir los pasos a seguir.",
           correcto: false,
         },
       ],
@@ -1577,22 +1739,25 @@ export const QUIZ = {
         {
           id: "a",
           texto:
-            "Porque describes QUÉ datos quieres, no CÓMO obtenerlos: no le dices que recorra la tabla fila por fila, él elige la estrategia más eficiente. En imperativo tendrías que escribir el ciclo y la condición a mano.",
+            "Porque describes QUÉ datos quieres, no CÓMO obtenerlos; el motor es el que elige la estrategia más eficiente.",
           nivel: 3,
         },
         {
           id: "b",
-          texto: "Porque declaras lo que quieres obtener sin especificar los pasos para lograrlo.",
+          texto:
+            "Porque lo que haces es declarar aquello que quieres obtener sin tener que especificar los pasos para lograrlo.",
           nivel: 2,
         },
         {
           id: "c",
-          texto: "Porque escribes las instrucciones paso a paso para leer cada fila de la tabla.",
+          texto:
+            "Porque escribes las instrucciones paso a paso que hacen falta para ir leyendo una por una las filas de la tabla.",
           nivel: 1,
         },
         {
           id: "d",
-          texto: "Porque SQL se ejecuta en un servidor en la nube.",
+          texto:
+            "Porque el lenguaje SQL se termina ejecutando dentro de un servidor que está alojado en algún lugar de la nube.",
           nivel: 0,
         },
         { id: "no_se", texto: "No sé", nivel: 0 },
@@ -1603,12 +1768,14 @@ export const QUIZ = {
       opciones: [
         {
           id: "a",
-          texto: "El sistema o motor (por ejemplo, el optimizador de consultas de la base de datos), no el programador.",
+          texto:
+            "El sistema o motor, como el optimizador de consultas de la base de datos, y no la persona que programa.",
           correcto: true,
         },
         {
           id: "b",
-          texto: "El programador, que escribe cada ciclo y condición a mano.",
+          texto:
+            "El programador, que es quien tiene que escribir manualmente cada uno de los ciclos y de las condiciones.",
           correcto: false,
         },
       ],
