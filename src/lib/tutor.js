@@ -41,10 +41,15 @@ async function generar(systemPrompt, contents) {
   }
 
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent?key=${KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // La key se manda por header (funciona tanto con keys "AIza..."
+        // como con el formato nuevo "AQ..." de Google AI Studio).
+        "x-goog-api-key": KEY,
+      },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemPrompt }] },
         contents,
