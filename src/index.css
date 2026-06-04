@@ -6,6 +6,16 @@ html, body, #root {
   height: 100%;
 }
 
+/* Nunca permitir scroll/zoom por desbordamiento horizontal */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing: antialiased;
