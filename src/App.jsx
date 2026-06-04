@@ -2,6 +2,7 @@ import { useState } from "react";
 import Login from "./pages/Login.jsx";
 import Onboarding from "./pages/Onboarding.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import Estudiar from "./pages/Estudiar.jsx";
 import SkillTree from "./pages/SkillTree.jsx";
 import Matches from "./pages/Matches.jsx";
 import Admin from "./pages/Admin.jsx";
@@ -13,6 +14,7 @@ export default function App() {
   const [conocidos, setConocidos] = useState([]);
   const [targetUser, setTargetUser] = useState(null);
   const [conceptosAEvaluar, setConceptosAEvaluar] = useState([]);
+  const [temaAEstudiar, setTemaAEstudiar] = useState(null);
 
   function logout() {
     setUsuario(null);
@@ -74,6 +76,24 @@ export default function App() {
           onReevaluar={(conceptos) => {
             setConceptosAEvaluar(conceptos);
             setPagina("quiz-reeval");
+          }}
+          onEstudiarTema={(tema) => {
+            setTemaAEstudiar(tema);
+            setPagina("estudiar");
+          }}
+        />
+      );
+    }
+
+    if (pagina === "estudiar") {
+      return (
+        <Estudiar
+          usuario={usuario}
+          tema={temaAEstudiar}
+          onLogout={logout}
+          onVolver={() => {
+            setTemaAEstudiar(null);
+            setPagina("skilltree");
           }}
         />
       );

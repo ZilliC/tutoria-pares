@@ -191,6 +191,7 @@ export default function SkillTreeVisual({
   nombreAlumno,
   modoAdmin = false,
   onEvaluarTema,
+  onEstudiarTema,
 }) {
   const [seleccionado, setSeleccionado] = useState(null);
   const [expandido, setExpandido] = useState(true);
@@ -358,6 +359,15 @@ export default function SkillTreeVisual({
               </h4>
             </div>
             <div className="flex items-center gap-2">
+              {!modoAdmin && onEstudiarTema && (
+                <button
+                  type="button"
+                  onClick={() => onEstudiarTema(temaSel)}
+                  className="text-xs px-3 py-1 rounded-full border border-green-400 text-green-700 hover:bg-green-50 whitespace-nowrap"
+                >
+                  Estudiar tema
+                </button>
+              )}
               {!modoAdmin && onEvaluarTema && (
                 <button
                   type="button"

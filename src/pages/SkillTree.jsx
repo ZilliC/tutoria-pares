@@ -26,6 +26,7 @@ export default function SkillTree({
   onVolverAdmin,
   onLogout,
   onReevaluar,
+  onEstudiarTema,
   onVerLeaderboard,
   onIniciarQuiz,
 }) {
@@ -67,6 +68,14 @@ export default function SkillTree({
   const conceptos = todosLosConceptos();
   const dominados = conceptos.filter((c) => modelos[c] >= 2).length;
   const todoCero = conceptos.every((c) => modelos[c] === 0);
+
+  // Enriquece un tema con el nivel actual del alumno en sus conceptos,
+  // para que el tutor LLM pueda adaptar la explicación.
+  const construirTemaEstudio = (t) => ({
+    nombre: t.nombre,
+    conceptos: t.conceptos,
+    niveles: Object.fromEntries(t.conceptos.map((c) => [c, modelos[c] || 0])),
+  });
 
   const maxWidth = vista === "arbol" && !todoCero ? "max-w-6xl" : "max-w-3xl";
 
@@ -148,6 +157,11 @@ export default function SkillTree({
             onEvaluarTema={
               !modoAdmin && onReevaluar ? onReevaluar : undefined
             }
+            onEstudiarTema={
+              !modoAdmin && onEstudiarTema
+                ? (tema) => onEstudiarTema(construirTemaEstudio(tema))
+                : undefined
+            }
           />
         </div>
       ) : (
@@ -184,15 +198,28 @@ export default function SkillTree({
                           <h4 className="font-semibold text-slate-700">
                             {t.nombre}
                           </h4>
-                          {!modoAdmin && onReevaluar && (
-                            <button
-                              type="button"
-                              onClick={() => onReevaluar(t.conceptos)}
-                              className="text-xs px-3 py-1 rounded-full border border-blue-400 text-blue-700 hover:bg-blue-50 whitespace-nowrap"
-                            >
-                              Evaluar tema
-                            </button>
-                          )}
+                          <div className="flex gap-2">
+                            {!modoAdmin && onEstudiarTema && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  onEstudiarTema(construirTemaEstudio(t))
+                                }
+                                className="text-xs px-3 py-1 rounded-full border border-green-400 text-green-700 hover:bg-green-50 whitespace-nowrap"
+                              >
+                                Estudiar tema
+                              </button>
+                            )}
+                            {!modoAdmin && onReevaluar && (
+                              <button
+                                type="button"
+                                onClick={() => onReevaluar(t.conceptos)}
+                                className="text-xs px-3 py-1 rounded-full border border-blue-400 text-blue-700 hover:bg-blue-50 whitespace-nowrap"
+                              >
+                                Evaluar tema
+                              </button>
+                            )}
+                          </div>
                         </div>
                         {t.conceptos.map((c) => (
                           <SkillBar
