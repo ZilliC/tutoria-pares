@@ -26,10 +26,11 @@ function construirSystemPrompt(tema, niveles) {
     ``,
     `Instrucciones:`,
     `- Responde siempre en español, con un tono amable y motivador.`,
-    `- Adapta la profundidad al nivel del estudiante: insiste en lo básico donde su nivel es bajo y avanza/profundiza donde ya domina.`,
-    `- Sé breve y claro. Usa ejemplos cotidianos y analogías sencillas.`,
-    `- Cíñete a este tema; si preguntan algo muy alejado, redirige con amabilidad.`,
-    `- No inventes datos; si algo no es seguro, dilo.`,
+    `- SÉ MUY CONCISO: ve directo al grano, máximo 3-4 frases o una lista corta. Nada de relleno, preámbulos ni repetir la pregunta.`,
+    `- Usa lenguaje sencillo y, cuando ayude, un ejemplo cotidiano breve (una sola analogía).`,
+    `- Adapta la profundidad al nivel del estudiante: refuerza lo básico donde su nivel es bajo y profundiza donde ya domina, pero sin extenderte.`,
+    `- Cíñete a este tema; si preguntan algo muy alejado, redirige en una frase.`,
+    `- No inventes datos; si algo no es seguro, dilo en pocas palabras.`,
   ].join("\n");
 }
 
@@ -53,7 +54,7 @@ async function generar(systemPrompt, contents) {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemPrompt }] },
         contents,
-        generationConfig: { temperature: 0.6, maxOutputTokens: 800 },
+        generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
       }),
     }
   );
@@ -85,7 +86,7 @@ export async function tutorIntroduccion(tema, niveles) {
       role: "user",
       parts: [
         {
-          text: `Dame una introducción breve y clara a este tema. Empieza saludando, explica de qué trata en pocas frases, presenta cada concepto en una línea sencilla adaptada a mi nivel, y termina invitándome a preguntar mis dudas.`,
+          text: `Dame una introducción muy breve a este tema: un saludo corto, una frase de qué trata, cada concepto en una sola línea sencilla, y cierra invitándome a preguntar. Sin relleno.`,
         },
       ],
     },
