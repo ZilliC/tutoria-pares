@@ -11,12 +11,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Evita el auto-zoom de iOS Safari al enfocar un campo: requiere fuente >= 16px */
+/* Evita el auto-zoom de iOS Safari al enfocar un campo: requiere fuente >= 16px.
+   Usamos !important para ganarle a utilidades de Tailwind como text-sm (14px),
+   que de otro modo tienen mayor especificidad que un selector de elemento. */
 @media (max-width: 767px) {
   input,
   textarea,
   select {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 }
 
