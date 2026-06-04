@@ -10,3 +10,61 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Evita el auto-zoom de iOS Safari al enfocar un campo: requiere fuente >= 16px */
+@media (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Estilos para el Markdown renderizado en el chat del tutor.
+   Tailwind (preflight) resetea márgenes, listas y negritas, así que los
+   reactivamos aquí dentro del contenedor .markdown. */
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+.markdown p {
+  margin: 0 0 0.5rem;
+}
+.markdown ul,
+.markdown ol {
+  margin: 0.25rem 0;
+  padding-left: 1.25rem;
+}
+.markdown ul {
+  list-style: disc;
+}
+.markdown ol {
+  list-style: decimal;
+}
+.markdown li {
+  margin: 0.15rem 0;
+}
+.markdown strong {
+  font-weight: 600;
+}
+.markdown em {
+  font-style: italic;
+}
+.markdown code {
+  background: rgba(15, 23, 42, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem;
+}
+.markdown a {
+  color: #2563eb;
+  text-decoration: underline;
+}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { tutorIntroduccion, tutorResponder } from "../lib/tutor.js";
 
 // Pantalla de estudio con tutor LLM: introducción automática al tema + chat de dudas.
@@ -105,13 +106,17 @@ export default function Estudiar({ usuario, tema, onVolver, onLogout }) {
             className={`flex ${m.rol === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
+              className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 m.rol === "user"
-                  ? "bg-blue-600 text-white rounded-br-sm"
-                  : "bg-slate-100 text-slate-800 rounded-bl-sm"
+                  ? "bg-blue-600 text-white rounded-br-sm whitespace-pre-wrap"
+                  : "bg-slate-100 text-slate-800 rounded-bl-sm markdown"
               }`}
             >
-              {m.texto}
+              {m.rol === "user" ? (
+                m.texto
+              ) : (
+                <ReactMarkdown>{m.texto}</ReactMarkdown>
+              )}
             </div>
           </div>
         ))}
