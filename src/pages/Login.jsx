@@ -47,10 +47,10 @@ export default function Login({ onLogin }) {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 sm:p-8">
         <h1 className="text-2xl font-bold text-slate-800 mb-1">
-          Tutoría entre pares
+          miProgreso
         </h1>
         <p className="text-slate-500 mb-6 text-sm">
-          Informática · FCA-UNAM
+          Informática
         </p>
 
         <form onSubmit={handleEntrar} className="space-y-4">
