@@ -128,6 +128,17 @@ export default function SkillTree({
         )}
       </div>
 
+      {!todoCero && (
+        <button
+          onClick={onBuscarMatch}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg mb-4"
+        >
+          {modoAdmin
+            ? "Ver matches de este alumno"
+            : "Buscar mi match de tutoría"}
+        </button>
+      )}
+
       {todoCero ? (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-8 text-center max-w-md mx-auto my-8 shadow-sm">
           <p className="text-amber-800 font-semibold text-lg mb-2">
@@ -236,17 +247,6 @@ export default function SkillTree({
             );
           })}
         </div>
-      )}
-
-      {!todoCero && (
-        <button
-          onClick={onBuscarMatch}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg"
-        >
-          {modoAdmin
-            ? "Ver matches de este alumno"
-            : "Buscar mi match de tutoría"}
-        </button>
       )}
     </div>
   );

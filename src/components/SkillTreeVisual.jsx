@@ -194,7 +194,7 @@ export default function SkillTreeVisual({
   onEstudiarTema,
 }) {
   const [seleccionado, setSeleccionado] = useState(null);
-  const [expandido, setExpandido] = useState(true);
+  const expandido = true;
 
   const temaSel = useMemo(
     () => LAYOUT.temas.find((t) => t.id === seleccionado) || null,
@@ -206,20 +206,10 @@ export default function SkillTreeVisual({
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-4">
-      <div className="flex justify-between items-center mb-2 gap-2">
+      <div className="mb-2">
         <div className="text-xs text-slate-500">
           Toca un tema para ver sus conceptos
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            if (expandido) setSeleccionado(null);
-            setExpandido((v) => !v);
-          }}
-          className="text-xs px-3 py-1 rounded-full border border-slate-300 text-slate-700 hover:bg-slate-50 whitespace-nowrap"
-        >
-          {expandido ? "Colapsar" : "Expandir"}
-        </button>
       </div>
 
       <div className="overflow-x-auto">
